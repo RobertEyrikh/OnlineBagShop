@@ -8,7 +8,14 @@
         <li> <a href="/services">Services</a> </li>
         <li> <a href="/delivery">Delivery</a> </li>
         <div class="push"> </div>
-        <button class= "btn-in"> Sign in </button>
+        <button class= "btn-in" @click="isSignInOpen = true"> Sign in </button>
+        <SignInPopup
+          :is-open="isSignInOpen"
+          @close= "isSignInOpen = false"
+          @ok = "SignInPopupConfirmed"
+        >
+        
+        </SignInPopup>
         <button class= "btn-up"> Sign up </button>
       </ul>
     </nav>
@@ -25,18 +32,26 @@
 </template>
 
 <script>
+import SignInPopup from "../components/SignInPopup.vue";
+
 export default {
-  name: "TheHeader"
-}
+  name: "TheHeader",
+  components: { SignInPopup },
+  data() {
+    return {isSignInOpen: false};
+  },
+  methods: {
+    SignInPopupConfirmed() {
+      alert ("confirmed");
+    },
+  },
+};
 </script>
 
 <style scoped>
 header > nav > ul > li > a > img {
   width: 50px;
   height: auto;
-}
-
-.header{
 }
 
 header > nav > ul {

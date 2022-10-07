@@ -135,9 +135,6 @@ header > nav > ul > li > a > img {
   height: auto;
 }
 
-.header{
-}
-
 header > nav > ul {
   list-style-type: none;
   display: flex;

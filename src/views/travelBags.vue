@@ -51,15 +51,16 @@
   </body>
 </template>
 
-<script>
+<script >
 import renderItemCard from "@/components/RenderItemCard";
 import AppLayoutProductCategory from "@/layouts/AppLayoutProductCategory";
 import {ItemsCard} from "@/components/ItemsCard";
 import ItemsCardContainer from "@/components/ItemsCardContainer";
+import draggable from 'vuedraggable'
 
 export default {
   name: "travelBags",
-  components: {AppLayoutProductCategory, renderItemCard},
+  components: {AppLayoutProductCategory, renderItemCard, draggable},
   data () {
     let arrayOfCard = []
     let allItemsCard = new ItemsCardContainer(arrayOfCard)
@@ -126,9 +127,6 @@ body {
 main {
   margin-right: 40px;
   margin-top: 25px;
-}
-
-main > div {
 }
 
 main > div > ul{
