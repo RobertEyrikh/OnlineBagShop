@@ -12,11 +12,16 @@
         <SignInPopup
           :is-open="isSignInOpen"
           @close= "isSignInOpen = false"
-          @ok = "SignInPopupConfirmed"
+          @logIn = "SignInPopupConfirmed"
         >
-        
         </SignInPopup>
-        <button class= "btn-up"> Sign up </button>
+        <button class= "btn-up" @click="isSignUpOpen = true"> Sign up </button>
+        <SignUpPopup
+          :is-open="isSignUpOpen"
+          @close= "isSignUpOpen = false"
+          @logIn = "SignUpPopupConfirmed"
+        >
+        </SignUpPopup>
       </ul>
     </nav>
     <div>
@@ -33,16 +38,20 @@
 
 <script>
 import SignInPopup from "../components/SignInPopup.vue";
+import SignUpPopup from "../components/SignUpPopup.vue";
 
 export default {
   name: "TheHeader",
-  components: { SignInPopup },
+  components: { SignInPopup, SignUpPopup },
   data() {
-    return {isSignInOpen: false};
+    return { isSignInOpen: false, isSignUpOpen: false };
   },
   methods: {
     SignInPopupConfirmed() {
       alert ("confirmed");
+    },
+    SignUpPopupConfirmed() {
+      alert("confirmed");
     },
   },
 };

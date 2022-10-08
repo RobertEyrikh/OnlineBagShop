@@ -6,8 +6,10 @@
                 <input class="input" type="email">
                 <h2>Password</h2>
                 <input class="input" type="password">
+                <h2>Confirm your password</h2>
+                <input class="input" type="password">
                 <button class="closeButton" id="button" @click="close"> Close</button>
-                <button class="logInButton" id="button" @click="logIn"> Log In</button>
+                <button class="logInButton" id="button" @click="logIn"> Registered</button>
             </div>
         </div>
     </div>
@@ -21,7 +23,7 @@ export default {
         return {}
     },
     props: {
-        isOpen: { 
+        isOpen: {
             required: true,
             type: Boolean,
         },
@@ -54,7 +56,7 @@ export default {
 .popup {
     min-height: 100%;
     display: flex;
-    align-items:center;
+    align-items: center;
     justify-content: center;
     padding: 30px 10px;
 }
@@ -71,21 +73,21 @@ export default {
     grid-gap: 10px;
 }
 
-.popupContent > h1, h2 {
+.popupContent>h1,
+h2 {
     grid-column: 1/3;
     text-align: center;
     font-size: 18px;
 }
 
-.popupContent > h2 {
-    
-}
+.popupContent>h2 {}
 
 .input {
     grid-column: 1/3;
     height: 27px;
     border-radius: 5px;
     border-style: none;
+    box-shadow: 5px 5px 10px #2f6a6f, -5px -5px 10px rgb(66, 146, 154);
 }
 
 #button {
@@ -94,6 +96,7 @@ export default {
     border-style: none;
     height: 25px;
     transition: background-color .2s ease-in-out;
+    box-shadow: 5px 5px 10px #2f6a6f, -5px -5px 10px rgb(66, 146, 154);
 }
 
 #button:hover {
