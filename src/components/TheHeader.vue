@@ -8,20 +8,20 @@
         <li> <a href="/services">Services</a> </li>
         <li> <a href="/delivery">Delivery</a> </li>
         <div class="push"> </div>
-        <button class= "btn-in" @click="isSignInOpen = true"> Sign in </button>
+        <button v-if="!user" class= "btn-in" @click="isSignInOpen = true"> Sign in </button>
         <SignInPopup
           :is-open="isSignInOpen"
           @close= "isSignInOpen = false"
-          @logIn = "SignInPopupConfirmed"
         >
         </SignInPopup>
-        <button class= "btn-up" @click="isSignUpOpen = true"> Sign up </button>
+        <button v-if="!user" class= "btn-up" @click="isSignUpOpen = true"> Sign up </button>
         <SignUpPopup
           :is-open="isSignUpOpen"
           @close= "isSignUpOpen = false"
           @logIn = "SignUpPopupConfirmed"
         >
         </SignUpPopup>
+        <button v-if="user" class="btn-in" @click="logout">Logout</button>
       </ul>
     </nav>
     <div>
@@ -39,6 +39,7 @@
 <script>
 import SignInPopup from "../components/SignInPopup.vue";
 import SignUpPopup from "../components/SignUpPopup.vue";
+import { useStore, mapState } from 'vuex';
 
 export default {
   name: "TheHeader",
@@ -47,12 +48,19 @@ export default {
     return { isSignInOpen: false, isSignUpOpen: false };
   },
   methods: {
-    SignInPopupConfirmed() {
-      alert ("confirmed");
+    logout() {
+        this.$store.dispatch('logout')
+        console.log(this.$store._state.data.auth.user)
+        //this.$router.push('/')
     },
     SignUpPopupConfirmed() {
       alert("confirmed");
     },
+  },
+  computed: {
+    ...mapState({
+      user: state => state.auth.user,
+    }),
   },
 };
 </script>
@@ -64,6 +72,7 @@ header > nav > ul > li > a > img {
 }
 
 header > nav > ul {
+  margin-right: 40px;
   list-style-type: none;
   display: flex;
   align-items: center;

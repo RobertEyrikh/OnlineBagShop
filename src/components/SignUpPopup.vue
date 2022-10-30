@@ -3,11 +3,24 @@
         <div class="popup">
             <div class="popupContent" @click.stop>
                 <h1>Email address</h1>
-                <input class="input" type="email">
+                <input class="input__field" 
+                    id="email"
+                    type="text" 
+                    v-model.trim="email"
+                    :class="{invalid: (v$.email.$invalid) }">
+                <small class="error__email" v-if="v$.email.$invalid">enter a valid email</small>
                 <h2>Password</h2>
-                <input class="input" type="password">
+                <input class="input__field" 
+                    type="password" 
+                    v-model="password"
+                    :class="{invalid: (v$.password.$invalid)}">
+                <small class="error__password" v-if="v$.password.$invalid ">min 6 characters</small>
                 <h2>Confirm your password</h2>
-                <input class="input" type="password">
+                <input class="input__field" 
+                    type="password" 
+                    v-model="confirmPassword"
+                :class="{ invalid: (password != confirmPassword)}">
+                <small class="error__password" v-if="v$.confirmPassword.$invalid "></small>
                 <button class="closeButton" id="button" @click="close"> Close</button>
                 <button class="logInButton" id="button" @click="logIn"> Registered</button>
             </div>
@@ -16,11 +29,25 @@
 </template>
 
 <script>
+import { email, required, minLength, sameAs } from '@vuelidate/validators'
+import useVuelidate from '@vuelidate/core'
 
 export default {
     name: '{{ properCase name }}',
     data() {
-        return {}
+        return {
+            v$: useVuelidate(),
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }
+    },
+    validations() {
+        return {
+            email: { email },
+            password: { minLength: minLength(6) },
+            confirmPassword: sameAs(this.password)
+        }
     },
     props: {
         isOpen: {
@@ -73,14 +100,11 @@ export default {
     grid-gap: 10px;
 }
 
-.popupContent>h1,
-h2 {
+.popupContent>h1, h2 {
     grid-column: 1/3;
     text-align: center;
     font-size: 18px;
 }
-
-.popupContent>h2 {}
 
 .input {
     grid-column: 1/3;
