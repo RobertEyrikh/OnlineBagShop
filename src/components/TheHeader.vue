@@ -18,15 +18,28 @@
         <SignUpPopup
           :is-open="isSignUpOpen"
           @close= "isSignUpOpen = false"
-          @logIn = "SignUpPopupConfirmed"
         >
         </SignUpPopup>
-        <button v-if="user" class="btn-in" @click="logout">Logout</button>
+        <div v-if="user" class="user__menu">
+          <button class="dropbtn">
+          </button>
+          <div class="menu__content">
+            <a @click="this.$router.push('/user')"> Account </a>
+            <a href="#"> 
+              <div v-if="user" @click="logout">Logout</div>
+            </a>
+          </div>
+        </div>
+        <div v-if="user" class="shopping__bag">
+          <button class="enter__bag" @click="this.$router.push('/basket')">
+            <a class="items__counter"><strong>0</strong></a>
+          </button>
+        </div>
       </ul>
     </nav>
     <div>
       <div class="btn-block">
-        <a href="/travelBags"><div class="btn1"><img src="../assets/bag.svg"> Travel bags </div></a>
+        <a href="/travelBags"><div class="btn"><img src="../assets/bag.svg"> Travel bags </div></a>
         <a href="/briefcases"><div class="btn"><img src="../assets/briefcase.svg"> Briefcases </div></a>
         <a href="/backpacks"><div class="btn"><img src="../assets/backpack.svg"> Backpacks </div></a>
         <a href="/wallets"><div class="btn"><img src="../assets/wallet.svg"> Wallets </div></a>
@@ -52,9 +65,6 @@ export default {
         this.$store.dispatch('logout')
         console.log(this.$store._state.data.auth.user)
         //this.$router.push('/')
-    },
-    SignUpPopupConfirmed() {
-      alert("confirmed");
     },
   },
   computed: {
@@ -164,18 +174,106 @@ header > nav > ul > li > a:hover {
   box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
 }
 
-.btn1{
-  height: 70px;
-  background-color: #4BA3ABFF;
-  text-align: center;
-  object-fit: cover;
-  transition: all linear .2s;
-  border-radius: 5px;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
-}
-
 .btn:hover {
   background-color: #4ba3ab;
   transform: scale(1.07);
 }
+.user__menu {
+  float: left;
+  overflow: hidden;
+}
+
+.dropbtn {
+  background-repeat: no-repeat;
+  background-image: url(../assets/userIcon.svg);
+}
+.user__menu .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.menu__content {
+  right: 70px;
+  display: none;
+  position: absolute;
+  background-color: #9ee0e6;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  cursor: pointer;
+}
+
+.menu__content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.menu__content a:hover {
+  background-color: #4BA3ABFF;
+}
+.user__menu:hover .menu__content {
+  display: block;
+}
+
+.shopping__bag .enter__bag {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  margin: 0;
+}
+
+.enter__bag {
+  max-width: 34px;
+  max-height: 34px;
+  background-repeat: no-repeat;
+  background-image: url(../assets/basket.svg);
+  cursor: pointer;
+}
+
+.items__counter {
+  font-size: 20px;
+  color: red;
+  position: relative;
+  top: -15px;
+  right: -10px;
+}
+
+
+/* .userMenu__img {
+  width: 20px;
+  height: 20px;
+  background-size: cover;
+  background: url(../assets/userIcon.svg);
+  cursor: pointer;
+}
+.user__menu {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  position: relative;
+  border: none;
+  background-color: Transparent;
+}
+.select:after {
+  content: "";
+  display: block;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+} */
 </style>

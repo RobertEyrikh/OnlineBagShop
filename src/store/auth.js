@@ -1,5 +1,6 @@
 import { async } from "@firebase/util";
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateCurrentUser } from "firebase/auth";  
+import { getDatabase } from "firebase/database";
 
 export default {
     state: () => ({ 
@@ -23,8 +24,22 @@ export default {
                 throw e
             } 
         },
-        async register({ dispatch, commit }, {email, password}) {
-
+        async register({ dispatch, commit }, {email, password, }) {
+            try {
+                await createUserWithEmailAndPassword(getAuth(), email, password)
+                // const uid = await dispatch('getUid')
+                // await set (ref(getDatabase(), `/users/${uid}/info`)), {
+                //     name
+                // }
+                commit('SET_USER')
+            } catch(e) {
+                console.log(e)
+                throw e
+            }
+        },
+        getUid() {
+            const user = getAuth().currentUser
+            return user ? user.uid : null
         },
         async logout ({ dispatch, commit }) {
             await signOut(getAuth())

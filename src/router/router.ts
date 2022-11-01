@@ -33,6 +33,16 @@ const routes: Array<RouteRecordRaw> = [
     name: 'wallets',
     component: () => import('../views/wallets.vue')
   },
+  {
+    path: '/basket',
+    name: 'basket',
+    component: () => import('../views/basket.vue')
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: () => import('../views/user.vue')
+  },
 ]
 
 const router = createRouter({
