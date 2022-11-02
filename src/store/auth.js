@@ -8,7 +8,7 @@ export default {
     }),
     mutations: {
         SET_USER (state) {
-            state.user = updateCurrentUser
+            state.user = getAuth().currentUser
         },
         CLEAR_USER (state) {
             state.user = null

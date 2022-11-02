@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import backpacks from '../views/backpacks.vue'
+import store from '@/store'
 
-const routes: Array<RouteRecordRaw> = [
+const routes= [
   {
     path: '/',
     name: 'home',
@@ -36,11 +37,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/basket',
     name: 'basket',
-    component: () => import('../views/basket.vue')
+    meta: { needsAuth: true },
+    component: () => import('../views/basket.vue'),
   },
   {
     path: '/account',
     name: 'account',
+    meta: { needsAuth: true },
     component: () => import('../views/account.vue')
   },
 ]
@@ -48,6 +51,19 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.needsAuth) {
+    if (store.state.auth.user) {
+      next()
+    } else {
+      next('/')
+    }
+  }
+  else {
+    next()
+  }
 })
 
 export default router

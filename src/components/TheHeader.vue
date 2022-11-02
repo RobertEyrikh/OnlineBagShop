@@ -4,7 +4,6 @@
       <ul class="info__buttons">
         <li> <a href="/"><img class="main__image" src="../assets/logo.svg"></a></li>
         <li> <a href="/about">About </a> </li>
-        <li> <a href="/project">Project </a> </li>
         <li> <a href="/services">Services</a> </li>
         <li> <a href="/delivery">Delivery</a> </li>
         <div class="push"> </div>
@@ -63,7 +62,6 @@ export default {
   methods: {
     logout() {
         this.$store.dispatch('logout')
-        console.log(this.$store._state.data.auth.user)
         this.$router.push('/')
     },
   },
