@@ -2,7 +2,7 @@
     <body>
         <app-layout-product-category>
             <main>
-
+              basket
             </main>
         </app-layout-product-category>
     </body>

@@ -39,9 +39,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/basket.vue')
   },
   {
-    path: '/user',
-    name: 'user',
-    component: () => import('../views/user.vue')
+    path: '/account',
+    name: 'account',
+    component: () => import('../views/account.vue')
   },
 ]
 

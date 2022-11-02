@@ -1,8 +1,8 @@
 <template>
   <header class="header">
     <nav>
-      <ul>
-        <li><a href="/"><img src="../assets/logo.svg"></a></li>
+      <ul class="info__buttons">
+        <li> <a href="/"><img class="main__image" src="../assets/logo.svg"></a></li>
         <li> <a href="/about">About </a> </li>
         <li> <a href="/project">Project </a> </li>
         <li> <a href="/services">Services</a> </li>
@@ -24,7 +24,7 @@
           <button class="dropbtn">
           </button>
           <div class="menu__content">
-            <a @click="this.$router.push('/user')"> Account </a>
+            <a @click="this.$router.push('/account')"> Account </a>
             <a href="#"> 
               <div v-if="user" @click="logout">Logout</div>
             </a>
@@ -64,7 +64,7 @@ export default {
     logout() {
         this.$store.dispatch('logout')
         console.log(this.$store._state.data.auth.user)
-        //this.$router.push('/')
+        this.$router.push('/')
     },
   },
   computed: {
@@ -76,12 +76,12 @@ export default {
 </script>
 
 <style scoped>
-header > nav > ul > li > a > img {
+.main__image {
   width: 50px;
   height: auto;
 }
 
-header > nav > ul {
+.info__buttons {
   margin-right: 40px;
   list-style-type: none;
   display: flex;
@@ -94,49 +94,39 @@ header > nav > ul {
   margin-left: auto;
 }
 
-.btn-in {
-  border: none;
-  border-radius: 7px;
-  color: white;
-  font-size: 15px;
-  padding: 7px 15px;
-  background-color: #111111;
-  transition: color .2s ease-in-out;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
-  cursor: pointer;
-}
-
+.btn-in, 
 .btn-up {
   border: none;
   border-radius: 7px;
-  color: black;
   font-size: 15px;
   padding: 7px 15px;
-  background-color: #9ee0e6;
   transition: color .2s ease-in-out;
   box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
   cursor: pointer;
 }
 
-.btn-in:hover {
-  color: #4ba3ab;
+.btn-in {
+  color: white;
+  background-color: #111111;
 }
 
+.btn-up {
+  color: black;
+  background-color: #9ee0e6;
+}
+
+.info__buttons > li > a:hover,
+.btn-in:hover,
 .btn-up:hover {
   color: #4ba3ab;
 }
 
-header > nav > ul > li > a {
+.info__buttons > li > a {
   display:block;
   text-transform: uppercase;
   text-decoration: none;
   color: #111;
-  transition: color .2s ease-in-out;
-}
-
-header > nav > ul > li > a:hover {
-  color: #4ba3ab;
-  transform: scale(1.1);
+  transition: color .1s ease-in-out;
 }
 
 .btn-block{
@@ -186,6 +176,7 @@ header > nav > ul > li > a:hover {
 .dropbtn {
   background-repeat: no-repeat;
   background-image: url(../assets/userIcon.svg);
+  transition: filter .1s ease-in-out;
 }
 .user__menu .dropbtn {
   font-size: 16px;
@@ -199,6 +190,7 @@ header > nav > ul > li > a:hover {
 }
 
 .menu__content {
+  border-radius: 5px;
   right: 70px;
   display: none;
   position: absolute;
@@ -218,7 +210,13 @@ header > nav > ul > li > a:hover {
   text-align: left;
 }
 
+.dropbtn:hover,
+.enter__bag:hover,
+.user__menu:hover .dropbtn {
+  filter: invert(56%) sepia(63%) saturate(351%) hue-rotate(137deg) brightness(91%) contrast(84%);
+}
 .menu__content a:hover {
+  border-radius: 5px;
   background-color: #4BA3ABFF;
 }
 .user__menu:hover .menu__content {
@@ -250,30 +248,4 @@ header > nav > ul > li > a:hover {
   top: -15px;
   right: -10px;
 }
-
-
-/* .userMenu__img {
-  width: 20px;
-  height: 20px;
-  background-size: cover;
-  background: url(../assets/userIcon.svg);
-  cursor: pointer;
-}
-.user__menu {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  outline: none;
-  position: relative;
-  border: none;
-  background-color: Transparent;
-}
-.select:after {
-  content: "";
-  display: block;
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-} */
 </style>

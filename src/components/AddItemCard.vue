@@ -6,24 +6,27 @@
         <li v-if="isAddPostVisible">
           <img class="inputImg" v-bind:src="`${publicPath}${imagePreview}`">
           <label class="inputBlock">
-            <input class="inputFile" required
-                   type="file"
-                   ref="file"
-                   name="file"
-                   accept="image/*"
-                   v-bind:value="image"
-                   v-on:change="handleFileUpload()"
-                   @input="image = $event.target.value">
+            <input 
+              class="inputFile" required
+              type="file"
+              ref="file"
+              name="file"
+              accept="image/*"
+              v-bind:value="image"
+              v-on:change="handleFileUpload()"
+              @input="image = $event.target.value">
           </label>
           <div class="input">
             <p>Price:</p>
-            <input type="number" required
-                   v-bind:value="price"
-                   @input="price = $event.target.value">
+            <input 
+              type="number" required
+              v-bind:value="price"
+              @input="price = $event.target.value">
             <p>Title:</p>
-            <input required
-                   v-bind:value="title"
-                   @input="title = $event.target.value">
+            <input 
+              required
+              v-bind:value="title"
+              @input="title = $event.target.value">
             <button class="cancel" @click=" cancelButton()">cancel</button>
             <button class="add" @click = "createCard,  allItemsCard.newCardAdd(createCard()), cancelButton()">add</button>
           </div>
@@ -45,7 +48,7 @@
 
 <script>
 export default {
-  name: "AddItemCard"
+  name: ""
 }
 </script>
 
@@ -53,9 +56,6 @@ export default {
 main {
   margin-right: 40px;
   margin-top: 25px;
-}
-
-main > div {
 }
 
 main > div > ul{
@@ -121,15 +121,18 @@ main > div > ul > li > div > a > img:hover{
   font-size: 20px;
 }
 
-.input {
-  margin-left: 15px;
-  margin-right: 15px;
-  display: grid;
-  grid-row-gap: 20px;
-  grid-row-gap: 15px;
-  grid-template-rows: 35px 35px;
-  grid-template-columns: 1fr 3fr;
-  margin-bottom: 20px;
+.add {
+  justify-self: end;
+  border: none;
+  border-radius: 7px;
+  color: black;
+  font-size: 15px;
+  padding: 7px 15px;
+  background-color: #9ee0e6;
+  transition: background-color .2s ease-in-out;
+  box-shadow: 5px 5px 10px #82bbbf, -5px -5px 10px #b4ebf0;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .input > input {

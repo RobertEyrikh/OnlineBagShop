@@ -8,25 +8,25 @@
       <ul id="elem" >
         <li v-if="isAddPostVisible">
           <img class="inputImg" v-bind:src="`${publicPath}${imagePreview}`">
-          <label class="inputBlock">
-            <input class="inputFile" required
-                type="file"
-                ref="file"
-                name="file"
-                accept="image/*"
-                v-bind:value="image"
-                v-on:change="handleFileUpload()"
-                @input="image = $event.target.value">
-          </label>
+            <input 
+              class="inputFile" required
+              type="file"
+              ref="file"
+              name="file"
+              accept="image/*"
+              v-bind:value="image"
+              v-on:change="handleFileUpload()"
+              @input="image = $event.target.value">
           <div class="input">
           <p>Price:</p>
-            <input type="number" required
-                v-bind:value="price"
-                @input="price = $event.target.value">
+            <input 
+              type="number" required
+              v-bind:value="price"
+              @input="price = $event.target.value">
           <p>Title:</p>
             <input required
-                v-bind:value="title"
-                @input="title = $event.target.value">
+              v-bind:value="title"
+              @input="title = $event.target.value">
             <button class="cancel" @click=" cancelButton()">cancel</button>
           <button class="add" @click = "allItemsCard.newCardAdd(createCard()), cancelButton()">add</button>
           </div>
@@ -111,7 +111,6 @@ export default {
 </script>
 
 <style scoped>
-
 html,
 body {
   font-family: 'Open Sans', sans-serif;
@@ -216,6 +215,7 @@ main > div > ul > li {
   grid-template-rows: 35px 35px;
   grid-template-columns: 1fr 3fr;
   margin-bottom: 20px;
+  box-shadow: none;
 }
 
 .input > input {
@@ -299,22 +299,7 @@ main > div > ul > li {
   display: none;
 }
 
-.inputBlock {
-  cursor:pointer;
-  width: 160px;
-  height: 160px;
-  background-color: #3a9aa4;
-  display: block;
-  position: absolute;
-  top: 282px;
-  left: 138px;
-  opacity: 0;
-  border-radius: 5px;
-  transition: opacity 0.2s ease-in-out ;
+.inputImg:hover {
+  filter: invert(56%) sepia(63%) saturate(351%) hue-rotate(137deg) brightness(91%) contrast(84%);
 }
-
-.inputBlock:hover {
-  opacity: 0.2;
-}
-
 </style>
