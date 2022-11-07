@@ -16,7 +16,7 @@ const firebaseConfig = {
     storageBucket: "lethermanshop.appspot.com",
     messagingSenderId: "333837194287",
     appId: "1:333837194287:web:e4be59e8bf92e9af1fe2da",
-    measurementId: "G-ELHMB58GF0"
+    measurementId: "G-ELHMB58GF0",
 };
 
 

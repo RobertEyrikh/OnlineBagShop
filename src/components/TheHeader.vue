@@ -38,7 +38,7 @@
     </nav>
     <div>
       <div class="btn-block">
-        <a href="/travelBags"><div class="btn"><img src="../assets/bag.svg"> Travel bags </div></a>
+        <a href="/travelBagsCopy"><div class="btn"><img src="../assets/bag.svg"> Travel bags </div></a>
         <a href="/briefcases"><div class="btn"><img src="../assets/briefcase.svg"> Briefcases </div></a>
         <a href="/backpacks"><div class="btn"><img src="../assets/backpack.svg"> Backpacks </div></a>
         <a href="/wallets"><div class="btn"><img src="../assets/wallet.svg"> Wallets </div></a>

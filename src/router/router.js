@@ -25,9 +25,9 @@ const routes= [
     component: () => import('../views/briefcases.vue')
   },
   {
-    path: '/travelBags',
-    name: 'travelBags',
-    component: () => import('../views/travelBags.vue')
+    path: '/travelBagsCopy',
+    name: 'travelBagsCopy',
+    component: () => import('../views/travelBagsСopy.vue')
   },
   {
     path: '/wallets',

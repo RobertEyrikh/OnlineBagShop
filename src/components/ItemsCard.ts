@@ -19,4 +19,3 @@ export class ItemsCard {
         this.shoppingBag = '../assets/shoppingBag.webp'
     }
 }
-
