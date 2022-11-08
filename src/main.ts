@@ -3,9 +3,8 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router/router'
 import store from './store'
-import { FirebaseApp, initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getDatabase } from "firebase/database";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref } from "firebase/storage";
 
 //import 'materialize-css/dist/js/materialize.min'
 
@@ -19,8 +18,8 @@ const firebaseConfig = {
     measurementId: "G-ELHMB58GF0",
 };
 
-
-
 const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
 
 createApp(App).use(store).use(router).mount('#app')
+ 

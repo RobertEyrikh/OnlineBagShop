@@ -14,7 +14,7 @@
               type="file"
               ref="file"
               name="file"
-              accept="image/*"
+              accept=".jpg, .jpeg, .png" multiple
               v-bind:value="image"
               v-on:change="handleFileUpload()"
               @input="image = $event.target.value">
@@ -87,17 +87,19 @@ export default {
       }.bind(this), false);
       reader.readAsDataURL(this.file);
 
-      return(this.file.name)
+      return(this.file)
      },
  
     createCard() {
-      this.$store.state.addCard.item =  new ItemsCard( {
-        image: this.handleFileUpload(),
+      const itemCard =  new ItemsCard( {
+        image: this.file.name,
         price: this.price,
         id: Date.now(),
         title: this.title,
         shoppingBag: '../assets/shoppingBag.webp',
       })
+      this.$store.commit("SET_IMAGE", this.file)
+      this.$store.commit("SET_ITEM", itemCard)
       this.$store.dispatch("POST_ITEMS_ON_API")
 
     },
@@ -109,8 +111,7 @@ export default {
       this.price = ''
       this.id= ''
       this.image = ''
-    },
-    
+    },   
   },
   computed: {
     // ...mapState ({
