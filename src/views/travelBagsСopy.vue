@@ -34,7 +34,7 @@
           <button class="add" @click="createCard()">add</button>
           </div>
         </li>
-        <li v-for="card in allItemsCard.data">
+        <li v-for="card in $store.state.getCard.allItemsCard.data">
           <div>
             <a href="#"><img class="cardImage" :src="`${publicPath}${card.image}`" alt="bag"></a>
             <div>
@@ -101,7 +101,6 @@ export default {
       this.$store.commit("SET_IMAGE", this.file)
       this.$store.commit("SET_ITEM", itemCard)
       this.$store.dispatch("POST_ITEMS_ON_API")
-
     },
 
     cancelButton() {
@@ -118,6 +117,9 @@ export default {
     //   item: state => state.addCard.item
     // }),
   },
+  mounted () {
+    this.$store.dispatch("GET_ITEMS_FROM_API")
+  }
 }
 
 </script>

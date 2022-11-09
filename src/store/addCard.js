@@ -31,7 +31,6 @@ export default {
         console.log('Uploaded a blob or file!');
       });
         commit('SET_ITEM_TO_NULL')
-
     },
   },
 }
