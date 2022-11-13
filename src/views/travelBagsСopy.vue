@@ -4,19 +4,20 @@
   <app-layout-product-category>
   <main>
     <div>
-      <button class="addPostAdder" @click="cancelButton()"><img src="../assets/addPost.svg"></button>
+      <div class="progress" :style="`width:${progress}px`"></div>
+      <button class="postAdderVisible" @click="cancelButton()"><img src="../assets/addPost.svg"></button>
       <ul id="elem" >
         <li v-if="isAddPostVisible">
-          <img class="inputImg" @click="" v-bind:src="`${publicPath}${imagePreview}`" >
+          <img class="inputImg" @click="" :src="`${imagePreview}`"  >
           <label class="inputBlock">
             <input 
               class="inputFile" required
               type="file"
               ref="file"
               name="file"
-              accept=".jpg, .jpeg, .png" multiple
+              accept=".jpg, .jpeg, .png, .svg" 
               v-bind:value="image"
-              v-on:change="handleFileUpload()"
+              @change="handleFileUpload"
               @input="image = $event.target.value">
           </label>
           <div class="input">
@@ -30,13 +31,12 @@
               v-bind:value="title"
               @input="title = $event.target.value">
             <button class="cancel" @click=" cancelButton()">cancel</button>
-          <!-- <button class="add" @click = "allItemsCard.newCardAdd(createCard), cancelButton()">add</button> -->
           <button class="add" @click="createCard()">add</button>
           </div>
         </li>
-        <li v-for="card in $store.state.getCard.allItemsCard.data">
+        <li v-for="card in data">
           <div>
-            <a href="#"><img class="cardImage" :src="`${publicPath}${card.image}`" alt="bag"></a>
+            <a href="#"><img :src="`${card.image}`" class="cardImage" alt="bag"></a>
             <div>
               <p>${{card.price}}</p>
               <a href="#" class="pushBucket"><img class="bucket" src="../assets/shoppingBag.webp"></a>
@@ -58,7 +58,6 @@
 import renderItemCard from "@/components/RenderItemCard";
 import AppLayoutProductCategory from "@/layouts/AppLayoutProductCategory";
 import {ItemsCard} from "@/components/ItemsCard";
-import ItemsCardContainer from "@/components/ItemsCardContainer";
 import draggable from 'vuedraggable';
 import {mapActions, mapState} from 'vuex';
 
@@ -66,29 +65,38 @@ export default {
   name: "travelBagsCopy",
   components: {AppLayoutProductCategory, renderItemCard, draggable},
   data () {
-    let allItemsCard = new ItemsCardContainer([])
-
+    //let allItemsCard = new ItemsCardContainer([])
     return{ publicPath: process.env.BASE_URL,
       image: '', price: '', ref: '', title: '', file:'',
-      allItemsCard,
       isAddPostVisible: false, imagePreview: "add.svg",
-      
     }
   },
 
   methods: {
     handleFileUpload(){
+
       this.file = this.$refs.file.files[0];
-
       let reader = new FileReader();
-
-      reader.addEventListener("load", function () {
-        this.imagePreview = this.file.name;
-      }.bind(this), false);
+      reader.onload = (e) => {
+        this.preview = e.target.result;
+      }
+      
       reader.readAsDataURL(this.file);
+      reader.addEventListener("load", function () {
+        this.imagePreview = reader.result;
+      }.bind(this), false);
 
-      return(this.file)
+      // if (this.file) {
+      //   if (/\.(jpe?g|png|gif)$/i.test(this.file.name)) {
+      //     reader.readAsDataURL(this.file);
+      //   }
+      // }
+      return(this.file, this.url)
      },
+
+    upadateItemsCard() {
+      this.$store.dispatch("GET_ITEMS_FROM_API")
+    },
  
     createCard() {
       const itemCard =  new ItemsCard( {
@@ -101,6 +109,8 @@ export default {
       this.$store.commit("SET_IMAGE", this.file)
       this.$store.commit("SET_ITEM", itemCard)
       this.$store.dispatch("POST_ITEMS_ON_API")
+      this.isAddPostVisible = !this.isAddPostVisible
+      
     },
 
     cancelButton() {
@@ -110,18 +120,21 @@ export default {
       this.price = ''
       this.id= ''
       this.image = ''
+      this.upadateItemsCard()
     },   
   },
+
   computed: {
-    // ...mapState ({
-    //   item: state => state.addCard.item
-    // }),
+    ...mapState({
+      data: state => state.getCard.allItemsCard.data,
+      progress: state => state.addCard.progress
+    })
   },
+
   mounted () {
-    this.$store.dispatch("GET_ITEMS_FROM_API")
+    this.upadateItemsCard()
   }
 }
-
 </script>
 
 <style scoped>
@@ -159,6 +172,12 @@ main > div > ul > li {
   border-radius: 8px;
   box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
   margin-bottom: 20px;
+}
+
+.progress {
+  background-color: black;
+  height: 10px;
+  width: 10px;
 }
 
 .cardImage {
@@ -290,7 +309,7 @@ main > div > ul > li {
   margin-top: 5px;
 }
 
-.addPostAdder {
+.postAdderVisible {
   transition: all linear .2s;
   margin-top: 10px;
   margin-left: 40px;
@@ -300,11 +319,11 @@ main > div > ul > li {
   cursor: pointer;
 }
 
-.addPostAdder:hover{
+.postAdderVisible:hover{
   transform: scale(1.15)
 }
 
-.addPostAdder > img {
+.postAdderVisible > img {
   height: 40px;
   width: 40px;
 }
