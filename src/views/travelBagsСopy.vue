@@ -34,7 +34,8 @@
           <button class="add" @click="createCard()">add</button>
           </div>
         </li>
-        <li v-for="card in data">
+        <li v-for="card in allItemsCard.data" :key="card.id">
+          <!-- <transition-group name="list"> -->
           <div>
             <a href="#"><img :src="`${card.image}`" class="cardImage" alt="bag"></a>
             <div>
@@ -43,9 +44,10 @@
             </div>
             <div class="titleAndDelete">
               <h1>{{card.title}}</h1>
-              <button  @click="allItemsCard.cardDelete(card.id)"><img src="../assets/delete.svg"></button>
+              <button  @click="deleteItem(card.id)"><img src="../assets/delete.svg"></button>
             </div>
             </div>
+            <!-- </transition-group> -->
         </li>
       </ul>
     </div>
@@ -59,7 +61,7 @@ import renderItemCard from "@/components/RenderItemCard";
 import AppLayoutProductCategory from "@/layouts/AppLayoutProductCategory";
 import {ItemsCard} from "@/components/ItemsCard";
 import draggable from 'vuedraggable';
-import {mapActions, mapState} from 'vuex';
+import {mapState} from 'vuex';
 
 export default {
   name: "travelBagsCopy",
@@ -97,18 +99,25 @@ export default {
     upadateItemsCard() {
       this.$store.dispatch("GET_ITEMS_FROM_API")
     },
+    deleteItem(id) {
+      this.$store.dispatch("DELETE_ITEM", id)
+      .then (() => {
+        console.log('item was deleted', id)
+        
+      })
+    },
  
     createCard() {
-      const itemCard =  new ItemsCard( {
+      const itemCard = {
         image: this.file.name,
         price: this.price,
-        id: Date.now(),
+        id: this.id,
         title: this.title,
         shoppingBag: '../assets/shoppingBag.webp',
-      })
+      }
       this.$store.commit("SET_IMAGE", this.file)
-      this.$store.commit("SET_ITEM", itemCard)
-      this.$store.dispatch("POST_ITEMS_ON_API")
+      //this.$store.commit("SET_ITEM", itemCard)
+      this.$store.dispatch("POST_ITEMS_ON_API", itemCard)
       this.isAddPostVisible = !this.isAddPostVisible
       
     },
@@ -126,13 +135,13 @@ export default {
 
   computed: {
     ...mapState({
-      data: state => state.getCard.allItemsCard.data,
+      allItemsCard: state => state.getCard.allItemsCard,
       progress: state => state.addCard.progress
     })
   },
 
   mounted () {
-    this.upadateItemsCard()
+    this.$store.dispatch("GET_ITEMS_FROM_API")
   }
 }
 </script>
@@ -355,4 +364,20 @@ main > div > ul > li {
   background-color: #9ee0e6;
   transition: opacity 0.2s ease-in-out;
 }
+
+/* .list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 1s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+} */
 </style>

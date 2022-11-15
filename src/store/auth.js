@@ -18,7 +18,6 @@ export default {
         async login({ dispatch, commit }, { email, password }) {
             try {
                 await signInWithEmailAndPassword(getAuth(), email, password)
-
                 commit('SET_USER')
             } catch (e) {
                 throw e

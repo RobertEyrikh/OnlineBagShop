@@ -17,7 +17,7 @@ export default {
     }
   },
   actions: {
-    async GET_ITEMS_FROM_API ({ state, commit }) {
+    async GET_ITEMS_FROM_API ({ commit }) {
       let allItems 
       let allItemsCard = new ItemsCardContainer([])
 
@@ -25,19 +25,18 @@ export default {
         .get("https://lethermanshop-default-rtdb.asia-southeast1.firebasedatabase.app/TravelBags.json")
         .then(response => (allItems = response.data))
 
-      for (let key in allItems) {
-        await getDownloadURL(ref(getStorage(), 'files/' + allItems[key].item.image))
-          .then((url) => {
-            const item = new ItemsCard({
-              image: url,
-              price: allItems[key].item.price,
-              id: allItems[key].item.id,
-              title: allItems[key].item.title,
-              shoppingBag: '../assets/shoppingBag.webp',
+        for (let key in allItems) {
+          await getDownloadURL(ref(getStorage(), 'files/' + allItems[key].image))
+            .then((url) => {
+              const item = new ItemsCard({
+                image: url,
+                price: allItems[key].price,
+                id: allItems[key].id,
+                title: allItems[key].title,
+                shoppingBag: '../assets/shoppingBag.webp',
+              })
+              allItemsCard.newCardAdd(item)
             })
-            allItemsCard.newCardAdd(item)
-          })
-
       }
       commit('PUSH_ALL_ITEMS_CARD', allItemsCard)
     }
