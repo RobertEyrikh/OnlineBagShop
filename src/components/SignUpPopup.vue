@@ -160,7 +160,7 @@ export default {
     border-style: none;
     height: 25px;
     transition: background-color .2s ease-in-out;
-    box-shadow: 5px 5px 10px #2f6a6f, -5px -5px 10px rgb(66, 146, 154);
+    box-shadow: 3px 3px 7px #2f6a6f, -3px -3px 7px rgb(66, 146, 154);
 }
 
 #button:hover {
@@ -169,9 +169,11 @@ export default {
 
 .closeButton {
     grid-column: 1/2;
+    width: 80px;
 }
 
 .logInButton {
     grid-column: 2/3;
+    width: 80px;
 }
 </style>

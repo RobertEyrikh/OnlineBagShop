@@ -33,7 +33,6 @@
 
 import { email, required, minLength } from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { onBeforeMount } from 'vue';
 import { useStore, mapState } from 'vuex';
 
@@ -184,9 +183,11 @@ export default {
 
 .closeButton {
     grid-column: 1/2;
+    width: 80px;
 }
 
 .logInButton {
     grid-column: 2/3;
+    width: 80px;
 }
 </style>

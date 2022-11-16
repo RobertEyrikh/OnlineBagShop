@@ -8,7 +8,7 @@
       <button class="postAdderVisible" @click="cancelButton()"><img src="../assets/addPost.svg"></button>
       <ul id="elem" >
         <li v-if="isAddPostVisible">
-          <img class="inputImg" @click="" :src="`${imagePreview}`"  >
+          <img class="inputImg" @click="" :src="`${imagePreview}`">
           <label class="inputBlock">
             <input 
               class="inputFile" required
@@ -40,7 +40,8 @@
             <a href="#"><img :src="`${card.image}`" class="cardImage" alt="bag"></a>
             <div>
               <p>${{card.price}}</p>
-              <a href="#" class="pushBucket"><img class="bucket" src="../assets/shoppingBag.webp"></a>
+              <a @click="isEditOpen = true" class="pushBucket"><img  class="bucket" src="../assets/icons/edit.svg"></a>
+              <edit-popup :is-open="isEditOpen" @close="isEditOpen = false"/> 
             </div>
             <div class="titleAndDelete">
               <h1>{{card.title}}</h1>
@@ -62,40 +63,24 @@ import AppLayoutProductCategory from "@/layouts/AppLayoutProductCategory";
 import {ItemsCard} from "@/components/ItemsCard";
 import draggable from 'vuedraggable';
 import {mapState} from 'vuex';
+import EditPopup from "@/components/EditPopup.vue";
+import imagePreview from '../mixins/imagePreview'
 
 export default {
   name: "travelBagsCopy",
-  components: {AppLayoutProductCategory, renderItemCard, draggable},
+  mixins: [imagePreview],
+  components: {AppLayoutProductCategory, renderItemCard, draggable, EditPopup},
   data () {
     //let allItemsCard = new ItemsCardContainer([])
-    return{ publicPath: process.env.BASE_URL,
+    return{
       image: '', price: '', ref: '', title: '', file:'',
-      isAddPostVisible: false, imagePreview: "add.svg",
+      isAddPostVisible: false, 
+      imagePreview: "add.svg",
+      isEditOpen: false,
     }
   },
 
   methods: {
-    handleFileUpload(){
-
-      this.file = this.$refs.file.files[0];
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        this.preview = e.target.result;
-      }
-      
-      reader.readAsDataURL(this.file);
-      reader.addEventListener("load", function () {
-        this.imagePreview = reader.result;
-      }.bind(this), false);
-
-      // if (this.file) {
-      //   if (/\.(jpe?g|png|gif)$/i.test(this.file.name)) {
-      //     reader.readAsDataURL(this.file);
-      //   }
-      // }
-      return(this.file, this.url)
-     },
-
     upadateItemsCard() {
       this.$store.dispatch("GET_ITEMS_FROM_API")
     },
@@ -103,7 +88,6 @@ export default {
       this.$store.dispatch("DELETE_ITEM", id)
       .then (() => {
         console.log('item was deleted', id)
-        
       })
     },
  
@@ -119,7 +103,6 @@ export default {
       //this.$store.commit("SET_ITEM", itemCard)
       this.$store.dispatch("POST_ITEMS_ON_API", itemCard)
       this.isAddPostVisible = !this.isAddPostVisible
-      
     },
 
     cancelButton() {
@@ -225,7 +208,7 @@ main > div > ul > li {
 }
 
 .titleAndDelete > button:hover{
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .pushBucket{
@@ -233,13 +216,14 @@ main > div > ul > li {
 }
 
 .bucket{
-  width: 40px;
-  height: 30px;
+  width: 45px;
+  height: 25px;
   transition: all linear .2s;
+  cursor: pointer;
 }
 
 .bucket:hover{
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 #elem > li > div > div > p {
