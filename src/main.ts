@@ -16,10 +16,11 @@ const firebaseConfig = {
     messagingSenderId: "333837194287",
     appId: "1:333837194287:web:e4be59e8bf92e9af1fe2da",
     measurementId: "G-ELHMB58GF0",
+    databaseURL: "https://lethermanshop-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
 const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
+// const storage = getStorage(app);
 
 createApp(App).use(store).use(router).mount('#app')
  

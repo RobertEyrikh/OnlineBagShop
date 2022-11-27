@@ -1,30 +1,30 @@
 <template>
-    <body>
-        <AppLayoutProductCategory>
-            <main>
-                <div>
-                    <div class="navbar">
-                        <div class="navbtn"><img src="../assets/user/main.svg"/>Main</div>
-                        <div class="navbtn"><img src="../assets/user/wishlist.svg" />Wishlist</div>
-                        <div class="navbtn"><img src="../assets/user/purchases.svg" />Purchases</div>
-                        <div class="dropdown">    
-                                <button class="dropbtn">
-                                    <img class="feedback" src="../assets/user/feedback.svg" />
-                                    Feedback
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <div class="dropdown-content">
-                                    <a href="#">Link 1</a>
-                                    <a href="#">Link 2</a>
-                                </div>
-                        </div>
-                        <div class="navbtn"><img src="../assets/user/profile.svg" />Profile</div>
-                    </div>
-                </div>
-            </main>
-            <slot/>
-        </AppLayoutProductCategory>
-    </body>
+  <body>
+    <AppLayoutProductCategory>
+      <main>
+        <div>
+          <div class="navbar">
+            <div class="navbtn" @click="this.$router.push('/account')"><img src="../assets/user/main.svg"/>Main</div>
+            <div class="navbtn" @click="this.$router.push('/wishlist')"><img src="../assets/user/wishlist.svg" />Wishlist</div>
+            <div class="navbtn" @click="this.$router.push('/purchases')"><img src="../assets/user/purchases.svg" />Purchases</div>
+            <div class="dropdown">    
+              <button class="dropbtn">
+              <img class="feedback" src="../assets/user/feedback.svg" />
+                Feedback
+                <i class="fa fa-caret-down"></i>
+              </button>
+            <div class="dropdown-content">
+              <a @click="this.$router.push('/reviews')">Reviews</a>
+              <a @click="this.$router.push('/questions')">Questions</a>
+            </div>
+          </div>
+          <div class="navbtn" @click="this.$router.push('/profile')"><img src="../assets/user/profile.svg" />Profile</div>
+          </div>
+        </div>
+      </main>
+      <slot/>
+    </AppLayoutProductCategory>
+  </body>
 </template>
 
 <script>

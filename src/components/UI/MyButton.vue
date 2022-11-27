@@ -17,9 +17,7 @@ export default {
   border-style: none;
   height: 25px;
   margin-top: 10px;
-  
   transition: background-color .2s ease-in-out;
-  
 }
 
 .my__button:hover {

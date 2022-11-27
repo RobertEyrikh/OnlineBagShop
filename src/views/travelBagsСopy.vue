@@ -5,51 +5,53 @@
   <main>
     <div>
       <div class="progress" :style="`width:${progress}px`"></div>
-      <button class="postAdderVisible" @click="cancelButton()"><img src="../assets/addPost.svg"></button>
+      <button v-if="isAdmin" class="postAdderVisible" @click="cancelButton()"><img src="../assets/addPost.svg"></button>
       <ul id="elem" >
-        <li v-if="isAddPostVisible">
-          <img class="inputImg" @click="" :src="`${imagePreview}`">
-          <label class="inputBlock">
-            <input 
-              class="inputFile" required
-              type="file"
-              ref="file"
-              name="file"
-              accept=".jpg, .jpeg, .png, .svg" 
-              v-bind:value="image"
-              @change="handleFileUpload"
-              @input="image = $event.target.value">
-          </label>
-          <div class="input">
-          <p>Price:</p>
-            <input 
-              type="number" required
-              v-bind:value="price"
-              @input="price = $event.target.value">
-          <p>Title:</p>
-            <input required
-              v-bind:value="title"
-              @input="title = $event.target.value">
-            <button class="cancel" @click=" cancelButton()">cancel</button>
-          <button class="add" @click="createCard()">add</button>
-          </div>
-        </li>
-        <li v-for="card in allItemsCard.data" :key="card.id">
-          <!-- <transition-group name="list"> -->
-          <div>
-            <a href="#"><img :src="`${card.image}`" class="cardImage" alt="bag"></a>
-            <div>
-              <p>${{card.price}}</p>
-              <a @click="isEditOpen = true" class="pushBucket"><img  class="bucket" src="../assets/icons/edit.svg"></a>
-              <edit-popup :is-open="isEditOpen" @close="isEditOpen = false"/> 
+        <transition-group class="all-items-card" name="list" tag="p">
+          <li v-if="isAddPostVisible">
+            <img class="inputImg" @click="" :src="`${imagePreview}`">
+            <label class="inputBlock">
+              <input 
+                class="inputFile" required
+                type="file"
+                ref="file"
+                name="file"
+                accept=".jpg, .jpeg, .png, .svg" 
+                v-bind:value="image"
+                @change="handleFileUpload"
+                @input="image = $event.target.value">
+            </label>
+            <div class="input">
+            <p>Price:</p>
+              <input 
+                type="number" required
+                v-bind:value="price"
+                @input="price = $event.target.value">
+            <p>Title:</p>
+              <input required
+                v-bind:value="title"
+                @input="title = $event.target.value">
+              <button class="cancel" @click=" cancelButton()">cancel</button>
+            <button class="add" @click="createCard()">add</button>
             </div>
-            <div class="titleAndDelete">
-              <h1>{{card.title}}</h1>
-              <button  @click="deleteItem(card.id)"><img src="../assets/delete.svg"></button>
-            </div>
-            </div>
-            <!-- </transition-group> -->
-        </li>
+          </li>
+          <li v-for="card in allItemsCard.data" :key="card.id">
+            <div v-bind="card">
+              <a href="#"><img :src="`${card.image}`" class="cardImage" alt="bag"></a>
+              <div>
+                <p>${{card.price}}</p>
+                <a v-if="isAdmin" @click="editCard(card.id)" class="pushBucket"><img  class="bucket" src="../assets/icons/edit.svg"></a>
+                <button class="product-interaction" v-if="!isAdmin"><img src="@/assets/icons/addBasket.svg"></button>
+                <edit-popup :is-open="isEditOpen" @close="isEditOpen = false"/> 
+              </div>
+              <div class="titleAndDelete">
+                <h1>{{card.title}}</h1>
+                <button class="product-interaction" v-if="isAdmin"  @click="deleteItem(card.id)"><img src="../assets/delete.svg"></button>
+                <button @click="setName()" class="product-interaction" v-if="!isAdmin"><img src="@/assets/icons/like.svg"></button>
+              </div>
+              </div>
+          </li>
+        </transition-group>
       </ul>
     </div>
   </main>
@@ -58,7 +60,6 @@
 </template>
 
 <script >
-import renderItemCard from "@/components/RenderItemCard";
 import AppLayoutProductCategory from "@/layouts/AppLayoutProductCategory";
 import {ItemsCard} from "@/components/ItemsCard";
 import draggable from 'vuedraggable';
@@ -69,7 +70,7 @@ import imagePreview from '../mixins/imagePreview'
 export default {
   name: "travelBagsCopy",
   mixins: [imagePreview],
-  components: {AppLayoutProductCategory, renderItemCard, draggable, EditPopup},
+  components: {AppLayoutProductCategory, draggable, EditPopup},
   data () {
     //let allItemsCard = new ItemsCardContainer([])
     return{
@@ -81,6 +82,12 @@ export default {
   },
 
   methods: {
+    editCard(id) {
+      this.$store.commit('GET_CARD_ID', id)
+      console.log(this.isAdmin)
+      return this.isEditOpen = true
+    },
+
     upadateItemsCard() {
       this.$store.dispatch("GET_ITEMS_FROM_API")
     },
@@ -113,18 +120,27 @@ export default {
       this.id= ''
       this.image = ''
       this.upadateItemsCard()
-    },   
+    }, 
+    
+    setName() {
+      this.$store.dispatch("PUSH_NAME")
+    }
   },
 
   computed: {
     ...mapState({
       allItemsCard: state => state.getCard.allItemsCard,
-      progress: state => state.addCard.progress
-    })
+      progress: state => state.addCard.progress,
+      isAdmin: state => state.auth.admin
+    }),
+    
+    getUser(){
+      this.$store.dispatch("GET_ITEMS_FROM_API")
+    }
   },
 
   mounted () {
-    this.$store.dispatch("GET_ITEMS_FROM_API")
+    
   }
 }
 </script>
@@ -147,7 +163,7 @@ main {
   margin-top: 25px;
 }
 
-main > div > ul{
+.all-items-card{
   list-style-type: none;
   display:flex;
   flex-wrap: wrap;
@@ -158,7 +174,7 @@ main > div > ul{
   margin-top: 20px;
 }
 
-main > div > ul > li {
+.all-items-card > li {
   height: 320px;
   width: 300px;
   border-radius: 8px;
@@ -185,7 +201,7 @@ main > div > ul > li {
   transform: scale(1.05);
 }
 
-#elem > li > div > div{
+.all-items-card > li > div > div{
   display:flex;
   margin-left:auto;
   margin-right: 20px;
@@ -197,17 +213,17 @@ main > div > ul > li {
   font-size: 15px;
 }
 
-.titleAndDelete > button {
+.product-interaction {
   border: none;
   background-color: transparent;
   width: 40px;
   height: 30px;
-  transition: all linear .2s;
+  transition: all .2s;
   margin-left: auto;
   cursor: pointer;
 }
 
-.titleAndDelete > button:hover{
+.product-interaction:hover{
   transform: scale(1.1);
 }
 
@@ -226,7 +242,7 @@ main > div > ul > li {
   transform: scale(1.1);
 }
 
-#elem > li > div > div > p {
+.all-items-card > li > div > div > p {
   margin-left: 15px;
   font-size: 20px;
 }
@@ -349,7 +365,7 @@ main > div > ul > li {
   transition: opacity 0.2s ease-in-out;
 }
 
-/* .list-item {
+.list-item {
   display: inline-block;
   margin-right: 10px;
 }
@@ -363,5 +379,5 @@ main > div > ul > li {
 .list-leave-to {
   opacity: 0;
   transform: translateY(30px);
-} */
+}
 </style>

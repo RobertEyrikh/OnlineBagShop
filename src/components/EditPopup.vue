@@ -27,7 +27,7 @@
                   @input="title = $event.target.value"
                 />
                 <my-button class="cancelButton" @click="close"> Cancel </my-button>
-                <my-button class="applyButton" @click="edit"> Apply </my-button>
+                <my-button class="applyButton" @click="editCard"> Apply </my-button>
             </div>
         </div>
     </div>
@@ -37,6 +37,7 @@
 import MyInput from './UI/MyInput.vue';
 import MyButton from './UI/MyButton.vue';
 import imagePreview from '../mixins/imagePreview'
+import { stringLength } from '@firebase/util';
   export default {
     name: 'EditPopup',
     mixins: [imagePreview],
@@ -50,6 +51,7 @@ import imagePreview from '../mixins/imagePreview'
         imagePreview: "add.svg",
         price: '',
         title: '',
+        image: '',
         file: '',
       }
     },
@@ -71,6 +73,8 @@ import imagePreview from '../mixins/imagePreview'
         price: this.price,
         title: this.title,
       }
+      this.$store.commit("SET_IMAGE", this.file)
+      this.$store.dispatch("UPDATE_ITEM", editCard)
     },
  
     close() {

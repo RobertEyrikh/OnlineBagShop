@@ -147,14 +147,15 @@ main > .info > button:hover {
 
 section {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   margin: 25px 40px 60px 40px;
-  grid-column-gap: 10px;
+  grid-column-gap: 30px;
+  grid-row-gap: 30px;
 }
 
 section img {
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  object-fit: cover;
 }
 
 section > article {

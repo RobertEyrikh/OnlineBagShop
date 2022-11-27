@@ -1,12 +1,19 @@
-import { async } from "@firebase/util";
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateCurrentUser } from "firebase/auth";  
-import { getDatabase } from "firebase/database";
+import { getDatabase, ref, set, update, onValue } from "firebase/database";
+import axios from 'axios'
 
 export default {
     state: () => ({ 
-        user: null
+        user: null,
+        admin: false
     }),
     mutations: {
+        SET_ADMIN (state) {
+            state.admin = true
+        },
+        CLEAR_ADMIN (state) {
+            state.admin = false
+        },
         SET_USER (state) {
             state.user = getAuth().currentUser
         },
@@ -15,22 +22,32 @@ export default {
         }
     },
     actions: {
-        async login({ dispatch, commit }, { email, password }) {
+        async login({ commit }, { email, password }) {
             try {
                 await signInWithEmailAndPassword(getAuth(), email, password)
                 commit('SET_USER')
+                console.log(getAuth().currentUser)
+                if (user.uid == 'SyQvjsJTdjfabSrwlLJX0rlFv5A3') {
+                    commit('SET_ADMIN')
+                } else {
+                    commit('CLEAR_ADMIN')
+                }
             } catch (e) {
                 throw e
             } 
+
         },
-        async register({ dispatch, commit }, {email, password, }) {
+        async register({ commit }, {email, password, }) {
             try {
                 await createUserWithEmailAndPassword(getAuth(), email, password)
-                // const uid = await dispatch('getUid')
-                // await set (ref(getDatabase(), `/users/${uid}/info`)), {
-                //     name
-                // }
                 commit('SET_USER')
+                const url = "https://lethermanshop-default-rtdb.asia-southeast1.firebasedatabase.app/Users"
+                const user = getAuth().currentUser
+                const newUser = {
+                    email: user.email,
+                    uid: user.uid
+                }
+                await axios.put(`${url}/${user.uid}.json`, newUser) 
             } catch(e) {
                 console.log(e)
                 throw e
@@ -40,10 +57,10 @@ export default {
             const user = getAuth().currentUser
             return user ? user.uid : null
         },
-        async logout ({ dispatch, commit }) {
+        async logout ({ commit }) {
             await signOut(getAuth())
-
             commit('CLEAR_USER')
+            commit('CLEAR_ADMIN')
         },
 
         fetchUser ({ commit }) {
@@ -51,13 +68,17 @@ export default {
             onAuthStateChanged(auth, async user => {
                 if (user === null) {
                     commit('CLEAR_USER')
-                    console.log('userNotFound')
+                    commit('CLEAR_ADMIN')
                 } else {
                     commit('SET_USER')
-                    console.log('userFound')
+                    if (user.uid == 'SyQvjsJTdjfabSrwlLJX0rlFv5A3') {
+                        commit('SET_ADMIN')
+                    } else {
+                        commit('CLEAR_ADMIN')
+                    }
                 }
-                //console.log(user)
             })
-        },  
+        }, 
+        
     }
 }

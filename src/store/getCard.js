@@ -10,6 +10,7 @@ export default {
     allItemsCard: [],
   }),
   getters: {
+    
   },
   mutations: {
     PUSH_ALL_ITEMS_CARD (state, payload) {

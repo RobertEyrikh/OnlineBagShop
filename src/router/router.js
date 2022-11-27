@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import backpacks from '../views/backpacks.vue'
 import store from '@/store'
 
 const routes= [
@@ -46,6 +45,52 @@ const routes= [
     meta: { needsAuth: true },
     component: () => import('../views/account.vue')
   },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('../views/About.vue')
+  },
+  {
+    path: '/services',
+    name: 'Services',
+    component: () => import('../views/Services.vue')
+  },
+  {
+    path: '/delivery',
+    name: 'Delivery',
+    component: () => import('../views/Delivery.vue')
+  },
+  {
+    path: '/profile',
+    name: 'AccountProfile',
+    component: () => import('../views/Account/AccountProfile.vue')
+  },
+  {
+    path: '/purchases',
+    name: 'AccountPurchases',
+    component: () => import('../views/Account/AccountPurchases.vue')
+  },
+  {
+    path: '/wishlist',
+    name: 'AccountWishlist',
+    component: () => import('../views/Account/AccountWishlist.vue')
+  },
+  {
+    path: '/feedback',
+    name: 'AccountFeedback',
+    component: () => import('../views/Account/AccountFeedback.vue')
+  },
+  {
+    path: '/reviews',
+    name: 'AccountReviews',
+    component: () => import('../views/Account/AccountReviews.vue')
+  },
+  {
+    path: '/questions',
+    name: 'AccountQuestions',
+    component: () => import('../views/Account/AccountQuestions.vue')
+  },
+  
 ]
 
 const router = createRouter({
