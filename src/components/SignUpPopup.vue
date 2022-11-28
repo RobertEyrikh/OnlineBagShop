@@ -2,15 +2,6 @@
     <div v-if="isOpen" class="backdrop" @click="close">
         <div class="popup">
             <div class="popupContent" @click.stop>
-                <!-- <h1>Name</h1>
-                <input 
-                    class="input__field"
-                    id="name"
-                    v-model.trim="name"
-                    :class="{ invalid: (v$.name.$invalid && !v$.name.required.$invalid) }"
-                    >
-                <small class="error__email" v-if="v$.name.$invalid && !v$.name.required.$invalid">enter a valid name</small>
-                <small class="error__email" v-if="v$.name.required.$invalid">enter name</small> -->
                 <h1>Email address</h1>
                 <input 
                     class="input__field" 

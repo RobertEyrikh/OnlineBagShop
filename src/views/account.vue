@@ -3,9 +3,10 @@
       <div class="account-body">
         <div class="account-info-card">
           <div @click="this.$router.push('/profile')" class="account__profile" >
-            <h1>Name</h1>
-            <div>email: email</div>
-            <div>phone: phone</div>
+            <div>name: {{this.name}}</div>
+            <div>email: {{this.email}}</div>
+            <div>phone: {{this.phone}}</div>
+            <div>birthday: {{this.birthday}}</div>
           </div>
           <div @click="this.$router.push('/wishlist')" class="account__wishlist">
             <h1>Wishlist:</h1>
@@ -19,14 +20,31 @@
 </template>
 
 <script>
-  import AccountLayoutCategory from "@/layouts/AccountLayout"
-  export default {
-    name: "account",
-    components: { AccountLayoutCategory },
+import { mapState } from 'vuex';
+import AccountLayoutCategory from "@/layouts/AccountLayout"
 
-    data() {
-        return {}
+export default {
+  name: "account",
+  components: { AccountLayoutCategory },
+
+  data() {
+    return {
+
     }
+  },
+
+  computed: {
+    ...mapState({
+      birthday: state => state.userInfo.birthday,
+      email: state => state.userInfo.email,
+      name: state => state.userInfo.name,
+      phone: state => state.userInfo.phone,
+    }),
+  },
+
+  mounted() {
+    return this.$store.dispatch("GET_USER_INFO")
+  }
 
   }
 </script>
@@ -53,6 +71,10 @@
 
 .account-info-card > div:hover {
   box-shadow: 3px 3px 3px 1.5px rgba(0, 0, 0, 0.2);
-  
+  scale: 1.01
+}
+
+.account__profile > div {
+  padding: 5px;
 }
 </style>

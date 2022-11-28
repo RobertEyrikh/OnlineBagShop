@@ -140,7 +140,7 @@ export default {
   },
 
   mounted () {
-    
+    this.$store.dispatch("GET_ITEMS_FROM_API")
   }
 }
 </script>
@@ -168,7 +168,6 @@ main {
   display:flex;
   flex-wrap: wrap;
   align-items: stretch;
-  /*justify-content: space-between;*/
   gap: 20px;
   margin-left: auto;
   margin-top: 20px;
