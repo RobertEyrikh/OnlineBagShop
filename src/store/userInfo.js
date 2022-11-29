@@ -1,7 +1,6 @@
 import { User } from '@/components/Users';
-import axios from 'axios';
-import { getAuth, onAuthStateChanged, updatePassword } from "firebase/auth";
-import { getDatabase, ref, set, update, onValue,  } from "firebase/database";
+import { getAuth, onAuthStateChanged, updatePassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, update, onValue, } from "firebase/database";
 
 export default {
   state: {
@@ -9,6 +8,7 @@ export default {
     phone: null,
     email: null,
     birthday: null,
+    authError: null,
   },
 
   mutations: {
@@ -24,18 +24,28 @@ export default {
     SET_BIRTHDAY(state, payload) {
       state.birthday = payload
     },
+    SET_AUTH_ERROR(state, payload) {
+      state.authError = payload
+    }
   },
 
   actions: {
-    async CHANGE_PASSWORD(payload) {
+    async CHANGE_PASSWORD({ commit, state }, payload) {
       const auth = getAuth();
       const user = auth.currentUser;
-      const newPassword = payload
-      updatePassword(user, newPassword).then(() => {
-        console.log('password has been changed')
-      }).catch((error) => {
-        console.log(error)
-      });
+      console.log(payload)
+      signInWithEmailAndPassword(auth, user.email, payload.key1)
+      .then(() => {
+        updatePassword(user, payload.key2).then(() => {
+          console.log('password has been changed')
+          commit('SET_AUTH_ERROR', false)
+          console.log(state.authError)
+        }).catch((error) => {
+          commit('SET_AUTH_ERROR', true)
+          console.log(error)
+        });       
+      }) 
+      console.log(state.authError)
     },
 
     async CHANGE_NAME({ commit }, payload) {

@@ -128,12 +128,14 @@ export default {
   padding: 20px 5% 20px 5%;
   display: flex;
   align-items: center;
+  color: rgb(41, 41, 41)
 }
 
 .profile__info > div,
 .profile__info {
   display: flex;
   align-items: center;
+  color: rgb(26, 26, 26)
 }
 
 .profile__info {

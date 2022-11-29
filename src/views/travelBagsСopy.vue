@@ -72,7 +72,6 @@ export default {
   mixins: [imagePreview],
   components: {AppLayoutProductCategory, draggable, EditPopup},
   data () {
-    //let allItemsCard = new ItemsCardContainer([])
     return{
       image: '', price: '', ref: '', title: '', file:'',
       isAddPostVisible: false, 
@@ -91,6 +90,7 @@ export default {
     upadateItemsCard() {
       this.$store.dispatch("GET_ITEMS_FROM_API")
     },
+    
     deleteItem(id) {
       this.$store.dispatch("DELETE_ITEM", id)
       .then (() => {
