@@ -35,7 +35,6 @@
 </template>
 
 <script>
-
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, sameAs } from '@vuelidate/validators'
 import { TransitionGroup } from 'vue'
@@ -72,17 +71,19 @@ export default {
       this.v$.$validate();
       if (!this.v$.$error) {
         this.$store.dispatch("CHANGE_PASSWORD", payload);
-        if (!this.authError) {
-          this.passwordSucces = true;
-          this.passwordError = false;
-          this.passwordLength = false;
-          this.confirmPassword = "";
-          this.newPassword = "";
-          this.oldPassword = "";
-        } 
-        else {
-          this.passwordError = true;
-          this.passwordLength = false;
+         {
+          if (!this.authError) {
+            this.passwordSucces = true;
+            this.passwordError = false;
+            this.passwordLength = false;
+            this.confirmPassword = "";
+            this.newPassword = "";
+            this.oldPassword = "";
+          }
+          else {
+            this.passwordError = true;
+            this.passwordLength = false;
+          }
         }
       }
       else {
@@ -93,6 +94,7 @@ export default {
       this.newPassword = "";
       this.oldPassword = "";
     },
+
     close() {
       this.passwordSucces = false,
       this.passwordError = false,
@@ -103,6 +105,7 @@ export default {
       this.oldPassword = "";
     },
   },
+
   validations() {
     return {
       oldPassword: { minLength: minLength(6), required, $lazy: true },
@@ -187,10 +190,12 @@ export default {
 
 .successMessage {
   background-color: #1d903c;
+  opacity: 0.9;
 }
 
 .errorMessage {
   background-color: #ac3b48;
+  opacity: 0.9;
 }
 
 .close-button {

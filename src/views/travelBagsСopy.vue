@@ -41,7 +41,12 @@
               <div>
                 <p>${{card.price}}</p>
                 <a v-if="isAdmin" @click="editCard(card.id)" class="pushBucket"><img  class="bucket" src="../assets/icons/edit.svg"></a>
-                <button class="product-interaction" v-if="!isAdmin"><img src="@/assets/icons/addBasket.svg"></button>
+                <button 
+                  class="product-interaction"
+                  v-if="!isAdmin"
+                  @click="addToBasket(card.id)"
+                >
+                   <img src="@/assets/icons/addBasket.svg"></button>
                 <edit-popup :is-open="isEditOpen" @close="isEditOpen = false"/> 
               </div>
               <div class="titleAndDelete">
@@ -124,6 +129,10 @@ export default {
     
     setName() {
       this.$store.dispatch("PUSH_NAME")
+    },
+
+    addToBasket(id) {
+      this.$store.dispatch("ADD_TO_BASKET", id)
     }
   },
 

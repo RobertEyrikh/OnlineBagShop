@@ -2,7 +2,8 @@ import { createStore } from 'vuex';
 import auth from './auth';
 import addCard from './addCard';
 import getCard from './getCard';
-import userInfo from './userInfo'
+import userInfo from './userInfo';
+import basket from './basket'
 
 export default createStore({
   modules: {
@@ -10,5 +11,6 @@ export default createStore({
     addCard,
     getCard,
     userInfo,
+    basket,
   }
 })
