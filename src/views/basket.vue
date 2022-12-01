@@ -9,31 +9,31 @@
             <p class="">Choose all</p>
           </div>         
         </div>
-        <div class="basket-items">
+        <div v-for="item in basket" class="basket-items">
           <ul class="items-list">
             <li class="item">    
               <div class="item-image">
-                <img class="image" src="@/assets/travelBags/1.jpg">
+                <img :src="`${item.image}`" class="image" alt="bag">
               </div>                        
               <p class="item-title">
-                Travel bags
+                {{item.title}}
               </p>
             </li>
           </ul>          
           <div class="items-counter">
-            <button class="button-counter">
+            <button @click="removeOneItem(item.id)" class="button-counter">
               <img class="button-counter__img" src="@/assets/icons/minus.svg">
             </button>
             <p class="counter-value">
               1
             </p>
-            <button class="button-counter">
+            <button @click="addOneItem(item.id)" class="button-counter">
               <img class="button-counter__img" src="@/assets/icons/plus.svg">
             </button>
-            <p>Delete</p>
+            <p @click="removeSameTypesItems(item.id)" class="items-delete">Delete</p>
           </div>
           <div class="price">
-            100$
+            {{'$' + item.price}}
           </div>
         </div>        
       </div>
@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import AppLayoutProductCategory from "../layouts/AppLayoutProductCategory.vue";
 export default {
   name: 'basket',
@@ -80,10 +81,35 @@ export default {
 
   data() {
     return {
-
+      
     }
   },
-  
+  methods: {
+    info() {
+      console.log(this.basket)
+    },
+    removeOneItem(id) {
+      this.$store.dispatch('REMOVE_ONE_ITEM', id)
+    },
+    addOneItem(id) {
+      this.$store.dispatch('ADD_TO_BASKET', id)
+    },
+    removeSameTypesItems(id) {
+      this.$store.dispatch('REMOVE_SAME_TYPES_ITEMS', id)
+    }
+  },
+
+  computed: {
+    ...mapState({
+      basket: state => [...state.basket.basket],
+    }),
+  },
+
+  mounted() {
+    this.$store.dispatch("GET_BASKET")
+    this.$store.dispatch("GET_ITEMS_QTY")
+  }
+
 }
 </script>
 
@@ -150,6 +176,15 @@ export default {
 .items-counter{
   display: flex;
   flex-direction: row;
+}
+
+.items-delete {
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.items-delete:hover {
+  filter: invert(10%) sepia(64%) saturate(5365%) hue-rotate(243deg) brightness(94%) contrast(113%);
 }
 
 .image {
