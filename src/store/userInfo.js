@@ -4,6 +4,7 @@ import { getDatabase, ref, update, onValue, } from "firebase/database";
 
 export default {
   state: {
+    adress: null,
     name: null,
     phone: null,
     email: null,
@@ -12,6 +13,9 @@ export default {
   },
 
   mutations: {
+    SET_ADRESS(state, payload) {
+      state.adress = payload
+    },
     SET_NAME (state, payload) {
       state.name = payload
     },
@@ -30,6 +34,15 @@ export default {
   },
 
   actions: {
+    async CHANGE_ADRESS({ commit }, payload) {
+      const db = getDatabase()
+      let user = getAuth().currentUser
+      update(ref(db, 'Users/' + user.uid), {
+        adress: payload,
+      });
+      commit('SET_ADRESS', this.adress)
+    },
+
     async CHANGE_PASSWORD({ commit, state }, payload) {
       const auth = getAuth();
       const user = auth.currentUser;
@@ -84,11 +97,13 @@ export default {
           onValue(userRef, (snapshot) => {
             const data = snapshot.val();
             let authUser = new User({
+              adress: data.adress,
               email: data.email,
               name: data.name,
               phone: data.phone,
-              birthday: data.birthday
-          });  
+              birthday: data.birthday              
+          }); 
+            commit('SET_ADRESS', authUser.adress)
             commit('SET_NAME', authUser.name)
             commit('SET_EMAIL', authUser.email)
             commit('SET_PHONE', authUser.phone)

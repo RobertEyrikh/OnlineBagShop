@@ -52,6 +52,21 @@
         </div>
       </div>
       <div class="profile-card">
+        Adress:
+        <div class="profile__info">
+          <div v-if="!isEditAdress">
+            <div>&nbsp {{ this.adress }}</div>
+            <button @click="isEditAdress = !isEditAdress" class="edit"><img src="@/assets/icons/editProfile.svg"></button>
+          </div>
+          <div v-if="isEditAdress">
+            <input class="input__field" v-model="newAdress">
+            <button @click="isEditAdress = !isEditAdress, changeAdress()" class="edit"><img
+                src="@/assets/icons/check.svg"></button>
+            <button @click="isEditAdress = !isEditAdress" class="edit"><img src="@/assets/icons/cancel.svg"></button>
+          </div>
+        </div>
+      </div>
+      <div class="profile-card">
         <my-button class="my-button" @click="isPopupOpen=true">Change password</my-button>
         <change-password-popup :is-open="isPopupOpen" @close="isPopupOpen = false" />
       </div>
@@ -70,6 +85,7 @@ export default {
 
   data() {
     return {
+      newAdress:'',
       newPhone: '',
       newName: '',
       newBirthday: '',
@@ -77,10 +93,14 @@ export default {
       isEditBirthday: false,
       isEditPhone: false,
       isPopupOpen: false,
+      isEditAdress: false,
     }
   },
 
   methods: {
+    changeAdress() {
+      this.$store.dispatch("CHANGE_ADRESS", this.newAdress)
+    },
     changeName() {
       this.$store.dispatch("CHANGE_NAME", this.newName)
     },
@@ -94,6 +114,7 @@ export default {
 
   computed: {
     ...mapState ({
+      adress: state => state.userInfo.adress,
       birthday: state => state.userInfo.birthday,
       email: state => state.userInfo.email,
       name: state => state.userInfo.name,

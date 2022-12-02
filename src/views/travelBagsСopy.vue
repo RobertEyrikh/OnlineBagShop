@@ -6,7 +6,7 @@
     <div>
       <div class="progress" :style="`width:${progress}px`"></div>
       <button v-if="isAdmin" class="postAdderVisible" @click="cancelButton()"><img src="../assets/addPost.svg"></button>
-      <ul id="elem" >
+      <ul id="elem" class="all-items-card0">
         <transition-group class="all-items-card" name="list" tag="p">
           <li v-if="isAddPostVisible">
             <img class="inputImg" @click="" :src="`${imagePreview}`">
@@ -35,28 +35,10 @@
             <button class="add" @click="createCard()">add</button>
             </div>
           </li>
-          <li v-for="card in allItemsCard.data" :key="card.id">
-            <div v-bind="card">
-              <a href="#"><img :src="`${card.image}`" class="cardImage" alt="bag"></a>
-              <div>
-                <p>${{card.price}}</p>
-                <a v-if="isAdmin" @click="editCard(card.id)" class="pushBucket"><img  class="bucket" src="../assets/icons/edit.svg"></a>
-                <button 
-                  class="product-interaction"
-                  v-if="!isAdmin"
-                  @click="addToBasket(card.id)"
-                >
-                   <img src="@/assets/icons/addBasket.svg"></button>
-                <edit-popup :is-open="isEditOpen" @close="isEditOpen = false"/> 
-              </div>
-              <div class="titleAndDelete">
-                <h1>{{card.title}}</h1>
-                <button class="product-interaction" v-if="isAdmin"  @click="deleteItem(card.id)"><img src="../assets/delete.svg"></button>
-                <button @click="setName()" class="product-interaction" v-if="!isAdmin"><img src="@/assets/icons/like.svg"></button>
-              </div>
-              </div>
-          </li>
         </transition-group>
+        <get-items-card >
+          
+        </get-items-card>
       </ul>
     </div>
   </main>
@@ -71,11 +53,12 @@ import draggable from 'vuedraggable';
 import {mapState} from 'vuex';
 import EditPopup from "@/components/EditPopup.vue";
 import imagePreview from '../mixins/imagePreview'
+import GetItemsCard from "@/components/GetItemsCard.vue";
 
 export default {
   name: "travelBagsCopy",
   mixins: [imagePreview],
-  components: {AppLayoutProductCategory, draggable, EditPopup},
+  components: { AppLayoutProductCategory, draggable, EditPopup, GetItemsCard },
   data () {
     return{
       image: '', price: '', ref: '', title: '', file:'',
@@ -172,7 +155,7 @@ main {
   margin-top: 25px;
 }
 
-.all-items-card{
+.all-items-card0{
   list-style-type: none;
   display:flex;
   flex-wrap: wrap;

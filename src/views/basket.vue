@@ -25,7 +25,7 @@
               <img class="button-counter__img" src="@/assets/icons/minus.svg">
             </button>
             <p class="counter-value">
-              1
+              {{ this.itemsQty[item.id] }}
             </p>
             <button @click="addOneItem(item.id)" class="button-counter">
               <img class="button-counter__img" src="@/assets/icons/plus.svg">
@@ -33,7 +33,7 @@
             <p @click="removeSameTypesItems(item.id)" class="items-delete">Delete</p>
           </div>
           <div class="price">
-            {{'$' + item.price}}
+            ${{ item.price * this.itemsQty[item.id] }}
           </div>
         </div>        
       </div>
@@ -54,11 +54,13 @@
       <div class="payment">   
         <div class="total total-sum">
           <p>Total &nbsp</p>
-          <p>1900</p>
+          <p>
+            {{ getTotalAmount }}
+          </p>
         </div>   
         <div class="total">
           <p>Number of product: &nbsp</p>
-          <p>2</p>
+          <p>{{ getTotalQty }}</p>
         </div>       
         <button class="button-order">Order</button>
         <div class="checkbox">
@@ -81,13 +83,10 @@ export default {
 
   data() {
     return {
-      
+      price: []
     }
   },
   methods: {
-    info() {
-      console.log(this.basket)
-    },
     removeOneItem(id) {
       this.$store.dispatch('REMOVE_ONE_ITEM', id)
     },
@@ -102,14 +101,28 @@ export default {
   computed: {
     ...mapState({
       basket: state => [...state.basket.basket],
+      itemsQty: state => state.basket.itemsQty,
     }),
+    getTotalAmount() {
+      let price = 0
+      for(let i = 0; i < this.basket.length; i ++) {
+        price += this.basket[i].price * this.itemsQty[this.basket[i].id]
+      }
+      return price
+    },
+    getTotalQty() {
+      let Qty = 0
+      for (let i = 0; i < this.basket.length; i++) {
+        Qty +=  this.itemsQty[this.basket[i].id]
+      }
+      return Qty
+    }
   },
 
   mounted() {
     this.$store.dispatch("GET_BASKET")
     this.$store.dispatch("GET_ITEMS_QTY")
   }
-
 }
 </script>
 

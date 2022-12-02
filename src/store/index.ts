@@ -4,6 +4,7 @@ import addCard from './addCard';
 import getCard from './getCard';
 import userInfo from './userInfo';
 import basket from './basket'
+import wishlist from './wishlist'
 
 export default createStore({
   modules: {
@@ -12,5 +13,6 @@ export default createStore({
     getCard,
     userInfo,
     basket,
+    wishlist
   }
 })

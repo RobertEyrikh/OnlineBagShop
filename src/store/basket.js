@@ -4,29 +4,34 @@ import { getDatabase, ref, update, remove, onValue, get, child } from "firebase/
 export default {
   state: {
     itemsCounter: '',
-    basket: []
+    basket: [],
+    itemsQty: {},
   },
   mutations: {
     SET_BASKET(state, payload) {
       state.basket = payload
     },
+    SET_ITEMS_QTY(state, payload) {
+      state.itemsQty = payload
+    }
   },
 
   actions: {
     async GET_ITEMS_QTY({ commit }, payload) {
       const db = getDatabase()
       let user = getAuth().currentUser
-      const itemRef = ref(db, 'TravelBags')
       const userRef = ref(db, 'Users/' + user.uid);
       onValue(userRef, (snapshot) => {
         const data = snapshot.val();
-        //let newData = data.items.filter(function (f) { return f !== typeof(i) })
-        // for (let i = 0; i < data.items.length; i++) {
-        //   console.log(data.items[i])
-        //   if (data.items[i]) {
-
-        //   }
-        // }        
+        let itemsQty = {}
+        for (let elem of data.items) {
+          if (itemsQty[elem] === undefined) {
+            itemsQty[elem] = 1;
+          } else {
+            itemsQty[elem]++;
+          }
+        }
+        commit('SET_ITEMS_QTY', itemsQty)
       })
     },
     async REMOVE_SAME_TYPES_ITEMS({ commit }, payload) {
@@ -35,7 +40,6 @@ export default {
       const dbRef = ref(getDatabase())
       get(child(dbRef, 'Users/' + user.uid)).then((snapshot) => {
         const data = snapshot.val();
-        console.log(data.items)
         let newData = data.items.filter(function (f) { return f !== payload })
         update(ref(db, 'Users/' + user.uid), {
           items: newData
@@ -64,14 +68,12 @@ export default {
       let user = getAuth().currentUser
       get(child(dbRef, 'Users/' + user.uid )).then ((snapshot) => {
         const data = snapshot.val();
-        console.log(data)
         if (data.items == null) {
           update(ref(db, 'Users/' + user.uid), {
             items: [payload]
           });
         } else {
           let newData = [...data.items, payload]
-          console.log(newData)
           update(ref(db, 'Users/' + user.uid), {
             items: newData
           });

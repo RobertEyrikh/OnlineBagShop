@@ -1,4 +1,5 @@
 export interface userInterface {
+  adress: number
   phone: number
   name: string
   email: string
@@ -9,6 +10,7 @@ export interface userInterface {
 }
 
 export class User {
+  adress: number
   phone: number
   name: string
   email: string
@@ -18,6 +20,7 @@ export class User {
   wishlist: { string: string }
 
   constructor(options: userInterface) {
+    this.adress = options.adress
     this.phone = options.phone
     this.name = options.name
     this.email = options.email
