@@ -4,12 +4,16 @@ import { getDatabase, ref, update, remove, onValue, get, child } from "firebase/
 export default {
   state: {
     wishlist: [],
+    wishlistItemsId: [],
   },
 
   mutations: {
     SET_WISHLIST(state, payload) {
       state.wishlist = payload
     },
+    SET_WISHLIST_STATE(state, payload) {
+      state.wishlistItemsId = payload
+    }
 
   },
   actions: {
@@ -38,7 +42,6 @@ export default {
               wishlist: newData
             });
           }
-          
         }
       })
     },
@@ -51,6 +54,7 @@ export default {
           const userRef = ref(db, 'Users/' + user.uid);
           onValue(userRef, (snapshot) => {
             const data = snapshot.val();
+            commit('SET_WISHLIST_STATE', data.wishlist)
             onValue(itemRef, (snapshot) => {
               let wishlistArray = []
               const itemData = snapshot.val()
@@ -67,7 +71,6 @@ export default {
                   }                  
                 }
               }
-              
               commit("SET_WISHLIST", wishlistArray)
             })
           })

@@ -1,9 +1,11 @@
 <template>
-  <the-header>
-  </the-header>
-  <slot/>
-  <the-footer>
-  </the-footer>
+  <body>
+    <the-header>
+    </the-header>
+    <slot/>
+    <the-footer>
+    </the-footer>
+  </body>
 </template>
 
 <script>
@@ -16,6 +18,10 @@ export default {
 </script>
 
 
-<style> 
-  
+<style>
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #F0EBF4;
+    margin: 0;
+  }
 </style>

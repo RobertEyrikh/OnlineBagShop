@@ -1,13 +1,15 @@
 import axios from 'axios'
 import { ItemsCard } from "@/components/ItemsCard";
 import ItemsCardContainer from "@/components/ItemsCardContainer";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref as storageReference, getDownloadURL } from "firebase/storage";
+import { getDatabase, ref, onValue, } from "firebase/database";
 
 export default {
   state: () => ({
     item: null,
     imageRef: null,
     allItemsCard: [],
+    thisItem: {},
   }),
   getters: {
     
@@ -15,6 +17,9 @@ export default {
   mutations: {
     PUSH_ALL_ITEMS_CARD (state, payload) {
       state.allItemsCard = payload
+    },
+    SET_THIS_ITEM (state, payload) {
+      state.thisItem = payload
     }
   },
   actions: {
@@ -27,7 +32,7 @@ export default {
         .then(response => (allItems = response.data))
 
         for (let key in allItems) {
-          await getDownloadURL(ref(getStorage(), 'files/' + allItems[key].image))
+          await getDownloadURL(storageReference(getStorage(), 'files/' + allItems[key].image))
             .then((url) => {
               const item = new ItemsCard({
                 image: url,
@@ -40,6 +45,22 @@ export default {
             })
       }
       commit('PUSH_ALL_ITEMS_CARD', allItemsCard)
+    },
+
+    async GET_THIS_ITEM ({ commit }, payload) {
+      const db = getDatabase();
+      const itemRef = ref(db, 'TravelBags')
+      onValue(itemRef, (snapshot) => {
+        const data = snapshot.val();
+        for (let key in data) {
+          if (key == payload) {
+            console.log(data[key])
+            commit('SET_THIS_ITEM', data[key])
+          }
+        }
+
+
+      })
     }
   }
 }

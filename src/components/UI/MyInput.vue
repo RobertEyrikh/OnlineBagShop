@@ -16,7 +16,7 @@ export default {
   border-style: none;
   outline: none;
   transition: all .2s; 
-  border: 2px solid #4ba3ab
+  border: 2px solid #F172A1
 }
 
 .input__field:hover {

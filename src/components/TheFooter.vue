@@ -1,5 +1,4 @@
 <template>
-  <hr>
   <footer>
     <div id="social">
       <a href="https://www.instagram.com/" target="_blank"><img src="../assets/instagram.png" alt="Ins"> </a>
@@ -20,11 +19,14 @@ export default {
 
 <style scoped>
 footer {
+  height: 70px;
+  margin: 0px 2% 0px 2%;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
   display: flex;
   align-items: center;
   padding: 20px;
-  background-color: #9ee0e6;
-  margin: auto;
+  background-color: #B39BC8;
 }
 
 footer #social {
@@ -40,13 +42,5 @@ footer #rights {
   width: 50%;
   font-size: 0.8em;
   margin: auto;
-}
-
-body hr {
-  display: block;
-  height: 3px;
-  border: 0;
-  background-color: #9ee0e6;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
 }
 </style>

@@ -120,18 +120,19 @@ export default {
 }
 
 .popupContent {
-    background-color: #4ba3ab;
+    background-color: #F172A1;
     color: #000;
     max-width: 500px;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 5px 5px 10px #2f6a6f, -5px -5px 10px rgb(66, 146, 154);
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
 }
 
 .popupContent>h1, h2 {
+    font-weight: normal;
+    margin: 20px 10px 0px 10px;
     grid-column: 1/3;
     text-align: center;
     font-size: 18px;
@@ -140,31 +141,37 @@ export default {
 .input {
     grid-column: 1/3;
     height: 27px;
-    border-radius: 5px;
+    border-radius: 10px;
     border-style: none;
-    box-shadow: 5px 5px 10px #2f6a6f, -5px -5px 10px rgb(66, 146, 154);
+}
+
+.input__field {
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 #button {
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
     border-style: none;
     height: 25px;
     transition: background-color .2s ease-in-out;
-    box-shadow: 3px 3px 7px #2f6a6f, -3px -3px 7px rgb(66, 146, 154);
 }
 
 #button:hover {
-    background-color: #2f6a6f;
+    background-color: #E64398;
 }
 
 .closeButton {
     grid-column: 1/2;
     width: 80px;
+    margin-top: 20px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .logInButton {
     grid-column: 2/3;
     width: 80px;
+    margin-top: 20px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 </style>

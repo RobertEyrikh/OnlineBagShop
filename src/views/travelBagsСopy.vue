@@ -1,49 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap');
 <template>
-  <body>
   <app-layout-product-category>
-  <main>
-    <div>
-      <div class="progress" :style="`width:${progress}px`"></div>
-      <button v-if="isAdmin" class="postAdderVisible" @click="cancelButton()"><img src="../assets/addPost.svg"></button>
-      <ul id="elem" class="all-items-card0">
-        <transition-group class="all-items-card" name="list" tag="p">
-          <li v-if="isAddPostVisible">
-            <img class="inputImg" @click="" :src="`${imagePreview}`">
-            <label class="inputBlock">
-              <input 
-                class="inputFile" required
-                type="file"
-                ref="file"
-                name="file"
-                accept=".jpg, .jpeg, .png, .svg" 
-                v-bind:value="image"
-                @change="handleFileUpload"
-                @input="image = $event.target.value">
-            </label>
-            <div class="input">
-            <p>Price:</p>
-              <input 
-                type="number" required
-                v-bind:value="price"
-                @input="price = $event.target.value">
-            <p>Title:</p>
-              <input required
-                v-bind:value="title"
-                @input="title = $event.target.value">
-              <button class="cancel" @click=" cancelButton()">cancel</button>
-            <button class="add" @click="createCard()">add</button>
-            </div>
-          </li>
-        </transition-group>
-        <get-items-card >
-          
-        </get-items-card>
-      </ul>
-    </div>
-  </main>
+    <main>
+      <div>
+        <div class="progress" :style="`width:${progress}px`"></div>
+        <button v-if="isAdmin" class="postAdderVisible" @click="cancelButton()"><img src="../assets/addPost.svg"></button>
+        <ul id="elem" class="all-items-card0">
+          <!-- <transition-group class="all-items-card" name="list" tag="p"> -->
+            <li v-if="isAddPostVisible" class="all-items-card">
+              <img class="inputImg" @click="" :src="`${imagePreview}`">
+              <label class="inputBlock">
+                <input 
+                  class="inputFile" required
+                  type="file"
+                  ref="file"
+                  name="file"
+                  accept=".jpg, .jpeg, .png, .svg" 
+                  v-bind:value="image"
+                  @change="handleFileUpload"
+                  @input="image = $event.target.value">
+              </label>
+              <div class="input">
+              <p>Price:</p>
+                <input 
+                  type="number" required
+                  v-bind:value="price"
+                  @input="price = $event.target.value">
+              <p>Title:</p>
+                <input required
+                  v-bind:value="title"
+                  @input="title = $event.target.value">
+                <button class="cancel" @click=" cancelButton()">cancel</button>
+              <button class="add" @click="createCard()">add</button>
+              </div>
+            </li>
+          <!-- </transition-group> -->
+          <get-items-card >
+          </get-items-card>
+        </ul>
+      </div>
+    </main>
   </app-layout-product-category>
-  </body>
 </template>
 
 <script >
@@ -138,39 +135,29 @@ export default {
 </script>
 
 <style scoped>
-html,
-body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: #9ee0e6;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
-  border-radius: 10px;
-}
-
-body {
-  padding: 12px;
-}
-
 main {
-  margin-right: 40px;
   margin-top: 25px;
 }
 
 .all-items-card0{
   list-style-type: none;
-  display:flex;
-  flex-wrap: wrap;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: center;
   gap: 20px;
-  margin-left: auto;
-  margin-top: 20px;
+  margin: 20px 5% 0px 5%;
+  padding: 0;
 }
 
-.all-items-card > li {
+
+.all-items-card {
   height: 320px;
   width: 300px;
   border-radius: 8px;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
-  margin-bottom: 20px;
+  margin: 0;
+  background-color: #B39BC8;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+  padding: 0;
 }
 
 .progress {
@@ -192,7 +179,7 @@ main {
   transform: scale(1.05);
 }
 
-.all-items-card > li > div > div{
+.all-items-card > div > div{
   display:flex;
   margin-left:auto;
   margin-right: 20px;
@@ -233,7 +220,7 @@ main {
   transform: scale(1.1);
 }
 
-.all-items-card > li > div > div > p {
+.all-items-card > div > div > p {
   margin-left: 15px;
   font-size: 20px;
 }
@@ -255,7 +242,7 @@ main {
   display: block;
   border-style: none;
   border-radius: 5px;
-  background-color: #e3fbff;
+  background-color: #F0EBF4;
 }
 
 .add {
@@ -265,9 +252,9 @@ main {
   color: black;
   font-size: 15px;
   padding: 7px 15px;
-  background-color: #9ee0e6;
+  background-color: #F0EBF4;
   transition: background-color .2s ease-in-out;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
+
   cursor: pointer;
   margin-bottom: 10px;
 }
@@ -281,17 +268,17 @@ main {
   padding: 7px 15px;
   background-color: #ea7a7a;
   transition: background-color .2s ease-in-out;
-  box-shadow: 2px 2px 4px #ea7a7a, -2px -2px 4px #f1cbcb;
+
   cursor: pointer;
   margin-bottom: 10px;;
 }
 
 .cancel:hover {
-  background-color: #e35757;
+  background-color: #E64398;
 }
 
 .add:hover {
-  background-color: #5cbec7;
+  background-color: #F172A1;
 }
 
 .inputImg  {
@@ -315,7 +302,7 @@ main {
   margin-left: 40px;
   border: none;
   outline: none;
-  background-color: #9ee0e6;
+  background-color: #F0EBF4;
   cursor: pointer;
 }
 

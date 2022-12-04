@@ -51,7 +51,7 @@ export default {
 
 <style scoped>
 .account-body {
-  margin: 5%
+  margin: 10px 5% 40px 5%
 }
 .account-info-card {
   display: grid;
@@ -61,9 +61,9 @@ export default {
 }
 
 .account-info-card > div {
-  background-color: #4ba3ab;
+  background-color: #A1C3D1;
   padding: 5%;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all .3s ease-in-out;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);

@@ -1,30 +1,32 @@
 <template>
-  <body>
-    <AppLayoutProductCategory>
-      <main>
-        <div>
-          <div class="navbar">
-            <div class="navbtn" @click="this.$router.push('/account')"><img src="../assets/user/main.svg"/>Main</div>
-            <div class="navbtn" @click="this.$router.push('/wishlist')"><img src="../assets/user/wishlist.svg" />Wishlist</div>
-            <div class="navbtn" @click="this.$router.push('/purchases')"><img src="../assets/user/purchases.svg" />Purchases</div>
-            <div class="dropdown">    
-              <button class="dropbtn">
+  <AppLayoutProductCategory>
+    <main>
+      <div>
+        <div class="navbar">
+          <div class="navbtn" @click="this.$router.push('/account')"><img src="../assets/user/main.svg" />Main</div>
+          <div class="navbtn" @click="this.$router.push('/wishlist')"><img src="../assets/user/wishlist.svg" />Wishlist
+          </div>
+          <div class="navbtn" @click="this.$router.push('/purchases')"><img src="../assets/user/purchases.svg" />Purchases
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn">
               <img class="feedback" src="../assets/user/feedback.svg" />
-                Feedback
-                <i class="fa fa-caret-down"></i>
-              </button>
+              Feedback
+              <i class="fa fa-caret-down"></i>
+            </button>
             <div class="dropdown-content">
               <a @click="this.$router.push('/reviews')">Reviews</a>
               <a @click="this.$router.push('/questions')">Questions</a>
             </div>
           </div>
           <div class="navbtn" @click="this.$router.push('/profile')"><img src="../assets/user/profile.svg" />Profile</div>
-          </div>
         </div>
-      </main>
-      <slot/>
-    </AppLayoutProductCategory>
-  </body>
+      </div>
+    </main>
+    <slot> 
+
+    </slot>
+  </AppLayoutProductCategory>
 </template>
 
 <script>
@@ -40,29 +42,15 @@ export default {
 </script>
 
 <style scoped>
-html,body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: #9ee0e6;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
-  border-radius: 10px;
-}
-
-body {
-  padding: 12px;
-}
-
 main {
-  margin-right: 40px;
-  margin-top: 25px;
+  margin: 0;
 }
 
 .navbar {
     overflow: hidden;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding-left: 40px;
-    padding-right: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    margin: 20px 4% 0px 4%;
 }
 
 .navbtn {
@@ -114,28 +102,28 @@ main {
 .navbtn:hover,
 .dropbtn:hover,
 .dropdown:hover .feedback {
-    filter: invert(56%) sepia(63%) saturate(351%) hue-rotate(137deg) brightness(91%) contrast(84%);
+    filter: invert(62%) sepia(60%) saturate(1682%) hue-rotate(298deg) brightness(100%) contrast(89%);
 }
 
 .navbar a:hover,
 .dropdown:hover .dropbtn {
-    color: #4ba3ab;
+    color: #F172A1;
 }
 
 .dropdown-content {
-    border-radius: 5px;
+    border-radius: 10px;
     display: none;
     position: absolute;
-    background-color: #9ee0e6;
+    background-color: #F172A1;
     min-width: 110px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
 .dropdown-content a {
-    border-radius: 5px;
+    border-radius: 10px;
     float: none;
-    color: black;
+    color: #F0EBF4;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -143,8 +131,8 @@ main {
 }
 
 .dropdown-content a:hover {
-    color: black;
-    background-color: #4BA3ABFF;
+    color: #F0EBF4;
+    background-color: #E64398;
 }
 
 .dropdown:hover .dropdown-content {

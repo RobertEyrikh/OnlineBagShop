@@ -6,10 +6,10 @@
           <p class="wishlist-title">Wishlist</p>
         </div>
         <div class="wishlist-items">
-          <ul class="items-list">
-            <li v-for="item in wishlist" class="item">
-              <div class="item-image">
-                <img :src="`${item.image}`" class="image" alt="bag">
+          <ul class="item-list">
+            <li v-for="item in wishlist" class="item-in-wishlist">
+              <div class="wishlist-item__image">
+                <img :src="`${item.image}`" class="wishlist-image" alt="bag">
               </div>
               <p class="item-price">
                 ${{item.price}}
@@ -17,14 +17,16 @@
               <p class="item-title">
                 {{item.title}}
               </p>
-              <div class="buttons">
-                <button class="like">
-                  <img src="@/assets/icons/like.svg">
+              <div class="buttons-block">
+                <button @click="addToWishlist(item.id)" class="like">
+                  <img class="like-img" src="@/assets/icons/like.svg">
                 </button>
-                <button class="like">
-                  <img src="@/assets/icons/addBasket.svg">
+                <button v-if="(isItemInBasket(item.id) == -1)" @click="basket" class="like">
+                  <img class="add-img" src="@/assets/icons/addBasket.svg">
                 </button>
+                <button class="basket-button" v-if="(isItemInBasket(item.id) != -1)" @click="this.$router.push('/basket')">Go to the Basket</button>
               </div>
+              {{ getSameTypeItems }}
             </li>
           </ul>
         </div>
@@ -41,13 +43,31 @@ export default {
   components: { AccountLayoutCategory },
 
   data() {
-    return {}
+    return {
+
+    }
+  },
+
+  methods: {
+    addToWishlist(id) {
+      this.$store.dispatch("ADD_ITEM_TO_WISHLIST", id)
+    },
+    basket() {
+      console.log(this.sameTypeItems)
+    },
+    isItemInBasket(id) {
+      return this.sameTypeItems.indexOf(id)
+    }
   },
 
   computed: {
     ...mapState({
       wishlist: state => [...state.wishlist.wishlist],
+      sameTypeItems: state => [...state.basket.sameTypeItems],
     }),
+    getSameTypeItems() {
+      this.$store.dispatch("GET_SAME_TYPE_ITEMS") 
+    }
   },
 
   mounted() {
@@ -57,12 +77,11 @@ export default {
 }
 </script>
 
-<style scooped>
+<style scoped>
 .wishlist {
-  margin: 5%;
-  background-color: red;
+  margin: 10px 5% 40px 5%;
   padding: 10px 30px 10px 30px;
-  background-color: #85c9cf;
+  background-color: #A1C3D1;
   border-radius: 10px;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
@@ -91,7 +110,7 @@ export default {
   padding: 50px 0px 50px 0px;
 }
 
-.items-list {
+.item-list {
   margin: 0px;
   list-style-type: none;
   padding: 0px;
@@ -101,10 +120,10 @@ export default {
   justify-items: center;
 }
 
-.item {
+.item-in-wishlist {
   align-self: center;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  border-radius: 10px;
+  background-color: #F172A1;
 }
 
 .items-counter {
@@ -117,12 +136,9 @@ export default {
   transition: all .2s;
 }
 
-.items-delete:hover {
-  filter: invert(10%) sepia(64%) saturate(5365%) hue-rotate(243deg) brightness(94%) contrast(113%);
-}
 
-.item-image {
-  border-radius: 5px;
+.wishlist-item__image {
+  border-radius: 10px;
 }
 
 .item-title {
@@ -134,30 +150,61 @@ export default {
   padding: 0px 20px 0px 20px;
 }
 
-.image {
-  object-fit: cover;
+.wishlist-image {
   height: 200px;
   width: 200px;
-  border-radius: 5px;
-  padding: 20px 20px 20px 20px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 20px;
 }
 
 .like {
   border: none;
+  object-fit: cover;
   outline: none;
   background-color: transparent;
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
+  transition: all .2s;
+  padding: 0;
+  cursor: pointer;
+}
+
+.like-img:hover {
+  scale: 1.05;
+  filter: invert(0%) sepia(1%) saturate(609%) hue-rotate(318deg) brightness(92%) contrast(87%);
+}
+
+.like-img {
+  transition: all .2s;
+  filter: invert(25%) sepia(34%) saturate(3361%) hue-rotate(336deg) brightness(77%) contrast(110%);
+}
+
+.add-img {
   transition: all .2s;
 }
 
-.like:hover {
-  filter: invert(10%) sepia(64%) saturate(5365%) hue-rotate(243deg) brightness(94%) contrast(113%);
+.add-img:hover {
+  filter: invert(41%) sepia(81%) saturate(459%) hue-rotate(84deg) brightness(91%) contrast(90%);
+  scale: 1.05;
 }
 
-.buttons {
-  padding: 0px 20px 0px 20px;
+
+.buttons-block {
+  padding: 10px 20px 10px 20px;
   display: flex;
   justify-content:space-between;
+}
+
+.basket-button {
+  border: none;
+  background-color: #1d903c;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  transition: all .2s;
+}
+
+.basket-button:hover {
+  scale: 1.05;
 }
 </style>

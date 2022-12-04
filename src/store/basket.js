@@ -6,6 +6,7 @@ export default {
     itemsCounter: '',
     basket: [],
     itemsQty: {},
+    sameTypeItems: [],
   },
   mutations: {
     SET_BASKET(state, payload) {
@@ -13,10 +14,25 @@ export default {
     },
     SET_ITEMS_QTY(state, payload) {
       state.itemsQty = payload
+    },
+    SET_SAME_TYPES_ITEMS(state, payload) {
+      state.sameTypeItems = payload
     }
   },
 
   actions: {
+    async GET_SAME_TYPE_ITEMS({ commit }, payload) {
+      const db = getDatabase()
+      let user = getAuth().currentUser
+      const userRef = ref(db, 'Users/' + user.uid);
+      onValue(userRef, (snapshot) => {
+        const data = snapshot.val();
+        let sameTypeItems = data.items.filter(function (item, pos) {
+          return data.items.indexOf(item) == pos;
+        })
+        commit('SET_SAME_TYPES_ITEMS', sameTypeItems)
+      })
+    },
     async GET_ITEMS_QTY({ commit }, payload) {
       const db = getDatabase()
       let user = getAuth().currentUser
@@ -31,7 +47,7 @@ export default {
             itemsQty[elem]++;
           }
         }
-        commit('SET_ITEMS_QTY', itemsQty)
+        commit('SET_ITEMS_QTY', itemsQty)   
       })
     },
     async REMOVE_SAME_TYPES_ITEMS({ commit }, payload) {
@@ -80,7 +96,6 @@ export default {
         }               
       })  
     },
-
     async GET_BASKET({ commit, state }) {
       const db = getDatabase();
       const auth = getAuth()

@@ -90,6 +90,11 @@ const routes= [
     name: 'AccountQuestions',
     component: () => import('../views/Account/AccountQuestions.vue')
   },
+  {
+    path: '/:id',
+    name: 'ThisItem',
+    component: () => import('../views/ThisItem')
+  }
   
 ]
 

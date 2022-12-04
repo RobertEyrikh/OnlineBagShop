@@ -89,7 +89,7 @@ import { stringLength } from '@firebase/util';
 
 </script>
 
-<style>
+<style scoped>
 .backdrop {
   position: fixed;
   height: 100%;
@@ -109,12 +109,11 @@ import { stringLength } from '@firebase/util';
 }
 
 .popupContent {
-  background-color: #4ba3ab;
-  color: #000;
+  background-color: #F172A1;
+  color: #111;
   max-width: 500px;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 2.5px 2.5px 6px #2f6a6f, -2.5px -2.5px 6px rgb(66, 146, 154);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 3px;
@@ -125,16 +124,22 @@ import { stringLength } from '@firebase/util';
   grid-column: 1/3;
   text-align: center;
   font-size: 18px;
+  font-style: normal;
+  margin: 20px 10px 0px 10px;
 }
 
 .cancelButton {
   grid-column: 1/2;
   width: 80px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+  margin: 20px 10px 0px 10px;
 }
 
 .applyButton {
   grid-column: 2/3;
   width: 80px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+  margin: 20px 10px 0px 10px;
 }
 
 .inputImg {
@@ -174,7 +179,8 @@ import { stringLength } from '@firebase/util';
   left: 427px;
   opacity: 0;
   border-radius: 5px;
-  background-color: #9ee0e6;
+  background-color: #E64398;
   transition: opacity 0.2s ease-in-out;
 }
+
 </style>

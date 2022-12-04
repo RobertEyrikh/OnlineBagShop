@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap');
 
 <template>
-  <body>
   <app-layout-product-category>
   <main>
     <div class="info">
@@ -71,7 +70,6 @@
     </article>
   </section>
   </app-layout-product-category>
-  </body>
 </template>
 
 
@@ -85,29 +83,13 @@ export default {
 </script>
 
 <style scoped>
-
-html,
-body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: #9ee0e6;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
-  border-radius: 10px;
-}
-
-body {
-  padding: 12px;
-}
-
 main {
-  background-color: #b4ebf0;
-  margin-left: 40px;
-  margin-right: 40px;
-  margin-top: 25px;
+  margin: 40px 2% 0px 2%;
+  background-color: #A1C3D1;
   display:flex;
   align-items: center;
   justify-content: space-around;
-  border-radius: 10px;
-  box-shadow: 8px 8px 15px #82bbbf , -8px -8px 15px #b4ebf0;
+  border-radius: 50px;
 }
 
 main > .info {
@@ -122,17 +104,18 @@ main > .info > h1 {
 main > .info > button {
   border: none;
   border-radius: 25px;
-  background-image: linear-gradient(to top, #9ee0e6, #2e8cab);
   padding: 10px 20px;
   margin-top: 20px;
   font-size: 20px;
   cursor: pointer;
   margin-bottom: 10px;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
+  background-color: #F172A1;
+  transition: all .2s;
+  color: #F0EBF4;
 }
 
 main > .info > button:hover {
-  background-image: linear-gradient(to top, #9ee0e6, #4ba3ab);
+  background-color: #E64398
 }
 
 .mainImage {
@@ -148,7 +131,7 @@ main > .info > button:hover {
 section {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  margin: 25px 40px 60px 40px;
+  margin: 40px 2% 30px 2%;
   grid-column-gap: 30px;
   grid-row-gap: 30px;
 }
@@ -159,10 +142,10 @@ section img {
 }
 
 section > article {
-  background-color: #b4ebf0;
-  border-radius: 10px;
+  background-color: #A1C3D1;
+  border-radius: 20px;
   padding: 10px;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 section > article > h2 {
@@ -188,26 +171,23 @@ section > article > button {
   margin-right: auto;
   border: none;
   align-items: center;
-  border-radius: 5px;
-  background-color: #9ee0e6;
+  border-radius: 20px;
+  background-color: #F172A1;
   padding: 10px 20px;
   margin-top: 20px;
   cursor: pointer;
   transition: .2s linear;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
+  color: #F0EBF4;
 }
 
 section > article > button:hover{
-  background-color: #4ba3ab;
+  background-color: #E64398;
 }
 
 section > article  hr {
   display: block;
-  height: 3px;
+  height: 2px;
   border: 0;
-  background-color: #b4ebf0;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
+  background-color: #111;
 }
-
-
 </style>

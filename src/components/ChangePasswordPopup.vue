@@ -141,13 +141,12 @@ export default {
 }
 
 .popupContent {
-  background-color: #4ba3ab;
+  background-color: #F172A1;
   color: #000;
   width: 200px;
   max-width: 500px;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 10px;
@@ -157,7 +156,8 @@ export default {
   grid-column: 1/3;
   text-align: center;
   font-size: 18px;
-  margin: 10px
+  margin: 20px 10px 0px 10px;
+  font-weight: normal;
 }
 
 .input__field {
@@ -174,7 +174,7 @@ export default {
 }
 
 #button:hover {
-  background-color: #2f6a6f;
+  background-color: #E64398;
 }
 
 .successMessage,

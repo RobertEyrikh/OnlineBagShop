@@ -74,18 +74,28 @@ export default {
 </script>
 
 <style scoped>
+.header {
+  padding-bottom: 0px;
+  margin: 0px 2% 0px 2%;
+  background-color: #A1C3D1;
+  padding: 20px 30px 20px 30px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
 .main__image {
   width: 50px;
   height: auto;
 }
 
 .info__buttons {
-  margin-right: 40px;
+  padding-left: 0px;
   list-style-type: none;
   display: flex;
   align-items: center;
   gap: 15px;
   transition: all linear .2s;
+  border-bottom: 1px solid #111;
+  padding-bottom: 5px;
 }
 
 .push{
@@ -95,28 +105,30 @@ export default {
 .btn-in, 
 .btn-up {
   border: none;
-  border-radius: 7px;
+  border-radius: 10px;
   font-size: 15px;
   padding: 7px 15px;
-  transition: color .2s ease-in-out;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
+  transition: all .2s ease-in-out;
   cursor: pointer;
 }
 
 .btn-in {
-  color: white;
+  color: #F0EBF4;
   background-color: #111111;
 }
 
 .btn-up {
   color: black;
-  background-color: #9ee0e6;
+  background-color: #F0EBF4;
 }
 
-.info__buttons > li > a:hover,
+.info__buttons > li > a:hover {
+  color: #E64398;
+}
+
 .btn-in:hover,
 .btn-up:hover {
-  color: #4ba3ab;
+  background-color: #F172A1;
 }
 
 .info__buttons > li > a {
@@ -129,13 +141,10 @@ export default {
 
 .btn-block{
   display: grid;
-  grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
-  height: 70px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   grid-gap: 15px;
   font-size: 15px;
   text-transform: uppercase;
-  padding-left: 40px;
-  padding-right: 40px;
 }
 
 .btn-block img {
@@ -153,17 +162,18 @@ export default {
 }
 
 .btn{
-  height: 70px;
-  background-color: #9ee0e6;
+  padding: 10px;
+  background-color: #B39BC8;
   text-align: center;
   object-fit: cover;
   transition: all linear .2s;
-  border-radius: 5px;
-  box-shadow: 5px 5px 10px #82bbbf , -5px -5px 10px #b4ebf0;
+  border-radius: 20px;
+  box-shadow: 0.3px 0.3px 0.3px 0.3px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .btn:hover {
-  background-color: #4ba3ab;
+  background-color: #F172A1;
   transform: scale(1.07);
 }
 .user__menu {
@@ -180,7 +190,7 @@ export default {
   font-size: 16px;
   border: none;
   outline: none;
-  color: white;
+  color: #F0EBF4;
   padding: 14px 16px;
   background-color: inherit;
   font-family: inherit;
@@ -188,20 +198,21 @@ export default {
 }
 
 .menu__content {
-  border-radius: 5px;
+  border-radius: 10px;
   right: 70px;
   display: none;
   position: absolute;
-  background-color: #9ee0e6;
+  background-color: #F172A1;
   min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   cursor: pointer;
+  color: #F0EBF4;
 }
 
 .menu__content a {
   float: none;
-  color: black;
+  color: #F0EBF4;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -211,11 +222,11 @@ export default {
 .dropbtn:hover,
 .enter__bag:hover,
 .user__menu:hover .dropbtn {
-  filter: invert(56%) sepia(63%) saturate(351%) hue-rotate(137deg) brightness(91%) contrast(84%);
+  filter: invert(62%) sepia(60%) saturate(1682%) hue-rotate(298deg) brightness(100%) contrast(89%);
 }
 .menu__content a:hover {
-  border-radius: 5px;
-  background-color: #4BA3ABFF;
+  border-radius: 10px;
+  background-color: #E64398;
 }
 .user__menu:hover .menu__content {
   display: block;
@@ -225,7 +236,7 @@ export default {
   font-size: 16px;
   border: none;
   outline: none;
-  color: white;
+  color: #F0EBF4;
   padding: 14px 16px;
   background-color: inherit;
   margin: 0;
@@ -241,7 +252,7 @@ export default {
 
 .items__counter {
   font-size: 20px;
-  color: red;
+  color: #111;
   position: relative;
   top: -15px;
   right: -10px;

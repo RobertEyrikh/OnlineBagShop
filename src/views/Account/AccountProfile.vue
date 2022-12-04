@@ -139,10 +139,10 @@ export default {
 .profile-body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  margin: 10px 40px 10px 40px;
-  background-color: #4ba3ab;
+  margin: 10px 4% 40px 4%;
+  background-color: #A1C3D1;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .profile-card {
@@ -185,11 +185,11 @@ export default {
   border-style: none;
   outline: none;
   transition: all .2s;
-  border: 2px solid #4ba3ab
+  border: 2px solid #A1C3D1
 }
 
 .input__field:hover {
-  border: 2px solid black
+  border: 2px solid #F172A1
 }
 
 .edit > img {
@@ -198,11 +198,16 @@ export default {
 }
 
 .edit:hover {
-  filter: invert(10%) sepia(64%) saturate(5365%) hue-rotate(243deg) brightness(94%) contrast(113%);
+  filter: invert(59%) sepia(13%) saturate(2349%) hue-rotate(293deg) brightness(101%) contrast(89%);
 }
 
 .my-button {
-  background-color: #4ba3ab;
+  color: #F0EBF4;
+  background-color: #F172A1;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.my-button:hover {
+  background-color:#E64398
 }
 </style>
