@@ -54,7 +54,6 @@ export default {
     upadateItemsCard() {
       this.$store.dispatch("GET_ITEMS_FROM_API")
     },
-
     addToBasket(id) {
       this.$store.dispatch("ADD_TO_BASKET", id)
     },
@@ -75,10 +74,6 @@ export default {
       wishlistItemsId: state => [...state.wishlist.wishlistItemsId],
       sameTypeItems: state => [...state.basket.sameTypeItems],
     }),
-
-    getUser() {
-      this.$store.dispatch("GET_ITEMS_FROM_API")
-    },
 
     getSameTypeItems() {
       this.$store.dispatch("GET_SAME_TYPE_ITEMS")

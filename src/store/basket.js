@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, update, remove, onValue, get, child } from "firebase/database";
+import { getDatabase, ref, update, onValue, get, child } from "firebase/database";
 
 export default {
   state: {
@@ -27,10 +27,12 @@ export default {
       const userRef = ref(db, 'Users/' + user.uid);
       onValue(userRef, (snapshot) => {
         const data = snapshot.val();
-        let sameTypeItems = data.items.filter(function (item, pos) {
-          return data.items.indexOf(item) == pos;
-        })
-        commit('SET_SAME_TYPES_ITEMS', sameTypeItems)
+        if (data.items) {
+          let sameTypeItems = data.items.filter(function (item, pos) {
+            return data.items.indexOf(item) == pos;
+          })
+          commit('SET_SAME_TYPES_ITEMS', sameTypeItems)
+        }       
       })
     },
     async GET_ITEMS_QTY({ commit }, payload) {

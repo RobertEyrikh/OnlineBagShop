@@ -54,25 +54,27 @@ export default {
           const userRef = ref(db, 'Users/' + user.uid);
           onValue(userRef, (snapshot) => {
             const data = snapshot.val();
-            commit('SET_WISHLIST_STATE', data.wishlist)
-            onValue(itemRef, (snapshot) => {
-              let wishlistArray = []
-              const itemData = snapshot.val()
-              for (let key in itemData) {
-                if (data.wishlist) {
-                  if (data.wishlist.includes(key)) {
-                    let wishlistItem = {
-                      id: itemData[key].id,
-                      image: itemData[key].image,
-                      price: itemData[key].price,
-                      title: itemData[key].title,
+            if (data.wishlist) {
+              commit('SET_WISHLIST_STATE', data.wishlist)
+              onValue(itemRef, (snapshot) => {
+                let wishlistArray = []
+                const itemData = snapshot.val()
+                for (let key in itemData) {
+                  if (data.wishlist) {
+                    if (data.wishlist.includes(key)) {
+                      let wishlistItem = {
+                        id: itemData[key].id,
+                        image: itemData[key].image,
+                        price: itemData[key].price,
+                        title: itemData[key].title,
+                      }
+                      wishlistArray.push(wishlistItem)
                     }
-                    wishlistArray.push(wishlistItem)                    
-                  }                  
+                  }
                 }
-              }
-              commit("SET_WISHLIST", wishlistArray)
-            })
+                commit("SET_WISHLIST", wishlistArray)
+              })
+            }
           })
         }
       })

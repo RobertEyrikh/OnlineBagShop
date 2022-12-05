@@ -57,7 +57,7 @@ export default {
     },
     isItemInBasket(id) {
       return this.sameTypeItems.indexOf(id)
-    }
+    },
   },
 
   computed: {
@@ -66,13 +66,17 @@ export default {
       sameTypeItems: state => [...state.basket.sameTypeItems],
     }),
     getSameTypeItems() {
-      this.$store.dispatch("GET_SAME_TYPE_ITEMS") 
+      this.$store.dispatch("GET_SAME_TYPE_ITEMS")
     }
   },
 
   mounted() {
     this.$store.dispatch("GET_ITEM_FROM_WISHLIST")
-  }
+  },
+
+  // beforeUpdate() {
+  //   this.$store.dispatch("GET_SAME_TYPE_ITEMS")
+  // }
   
 }
 </script>
@@ -135,7 +139,6 @@ export default {
   cursor: pointer;
   transition: all .2s;
 }
-
 
 .wishlist-item__image {
   border-radius: 10px;
