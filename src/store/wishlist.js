@@ -30,7 +30,6 @@ export default {
         } else {
           if(data.wishlist.includes(payload)) {
             let i = data.wishlist.indexOf(payload)
-            console.log(i)
             data.wishlist.splice(i, 1)
             console.log(data.wishlist)
             update(ref(db, 'Users/' + user.uid), {

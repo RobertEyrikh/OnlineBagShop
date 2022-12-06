@@ -92,7 +92,6 @@ export default {
         shoppingBag: '../assets/shoppingBag.webp',
       }
       this.$store.commit("SET_IMAGE", this.file)
-      //this.$store.commit("SET_ITEM", itemCard)
       this.$store.dispatch("POST_ITEMS_ON_API", itemCard)
       this.isAddPostVisible = !this.isAddPostVisible
     },
@@ -166,7 +165,7 @@ main {
   width: 10px;
 }
 
-.cardImage {
+/* .cardImage {
   background-color: #e3fbff;
   object-fit: cover;
   border-radius: 8px;
@@ -177,7 +176,7 @@ main {
 
 .cardImage:hover{
   transform: scale(1.05);
-}
+} */
 
 .all-items-card > div > div{
   display:flex;
@@ -186,7 +185,7 @@ main {
   align-items: center;
 }
 
-.titleAndDelete > h1 {
+/* .titleAndDelete > h1 {
   margin-left: 15px;
   font-size: 15px;
 }
@@ -218,7 +217,7 @@ main {
 
 .bucket:hover{
   transform: scale(1.1);
-}
+} */
 
 .all-items-card > div > div > p {
   margin-left: 15px;
@@ -343,7 +342,7 @@ main {
   transition: opacity 0.2s ease-in-out;
 }
 
-.list-item {
+/* .list-item {
   display: inline-block;
   margin-right: 10px;
 }
@@ -357,5 +356,5 @@ main {
 .list-leave-to {
   opacity: 0;
   transform: translateY(30px);
-}
+} */
 </style>

@@ -94,6 +94,11 @@ const routes= [
     path: '/:id',
     name: 'ThisItem',
     component: () => import('../views/ThisItem')
+  },
+  {
+    path: '/adminPanel',
+    name: 'AdminPanel',
+    component: () => import('../views/AdminPanel')
   }
   
 ]

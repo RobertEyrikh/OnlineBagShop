@@ -30,6 +30,12 @@
             >
           </textarea>
         </div> 
+        <div v-if="(isCommentPosted() !== -1)" class="error-message">
+          <p>You have already posted a comment</p>
+        </div>
+        <div v-if="(isCommentSuccessed() !== -1)" class="success-message">
+          <p>Your comment will be reviewed and then published</p>
+        </div>
         <div class="review-item__buttons">
           <button class="cancel-button">Cancel</button>
           <button class="send-button" @click="sendFeedback">Send</button>
@@ -40,6 +46,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'addReviewPopup',
   data() {
@@ -67,6 +74,12 @@ export default {
     close() {
       this.$emit("close")
     },
+    isCommentPosted() {
+      return (this.isExistComment.indexOf(this.itemId))
+    },   
+    isCommentSuccessed() {
+      return (this.isSuccessComment.indexOf(this.itemId))
+    },
     sendFeedback() {      
       let feedbackBody = {
         itemId: this.itemId,
@@ -74,7 +87,15 @@ export default {
         review: this.review,
       }
       this.$store.dispatch('SEND_FEEDBACK_FOR_CHECK', feedbackBody)
-    }
+      this.rate = '',
+      this.review = ''
+    }, 
+  },
+  computed: {
+    ...mapState ({
+      isExistComment: state => [...state.reviews.isExistComment],
+      isSuccessComment: state => [...state.reviews.isSuccessComment]
+    }),  
   }
 }
 
@@ -96,6 +117,7 @@ export default {
   height: 70vh;
   border-radius: 10px;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .rate-item {
@@ -108,7 +130,7 @@ export default {
   border-style: none;
   outline: none; 
   border: 0.5px solid #111;
-  height: 270px;
+  height: 200px;
   width: 100%;
   background-color:#F0EBF4;
   resize: none;
@@ -130,8 +152,27 @@ export default {
   border: 2px solid #F172A1;
 }
 
+.error-message {
+  color: #F0EBF4;
+  border-radius: 10px;
+  height: 40px;
+  background-color: #E64398;
+  padding: 10px;
+  text-align: center;
+}
+
+.success-message {
+  color: #F0EBF4;
+  border-radius: 10px;
+  height: 40px;
+  background-color: #22ad47;
+  padding: 10px;
+  text-align: center;
+}
+
 .review-item__buttons {
-  margin-top: 20px;
+  position:absolute; 
+	bottom:30px;
 }
 
 .cancel-button {

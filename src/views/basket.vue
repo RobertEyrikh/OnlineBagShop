@@ -11,7 +11,7 @@
       <div v-for="item in basket" class="basket-items">
         <ul class="items-list">
           <li class="item">
-            <div class="item-image">
+            <div @click="this.$router.push(`/${item.id}`)" class="item-image">
               <img :src="`${item.image}`" class="image" alt="bag">
             </div>
             <p class="item-title">
@@ -208,6 +208,7 @@ export default {
   width: 130px;
   margin-right: 10px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .counter-value {

@@ -197,7 +197,7 @@ export default {
 .basket-button {
   border: none;
   outline: none;
-  background-color: #22ad47;;
+  background-color: #22ad47;
   height: 50px;
   width: 100px;
   transition: all .2s;

@@ -19,7 +19,11 @@
           @close= "isSignUpOpen = false"
         >
         </SignUpPopup>
-        <div v-if="user" class="user__menu">
+        <div v-if="isAdmin" class="admin-block">
+          <button @click="this.$router.push('/adminPanel')" class="devtools-btn">Devtools</button>
+          <button @click="logout" class="logout-btn">Logout</button>
+        </div>
+        <div v-if="(user && !isAdmin)" class="user__menu">
           <button class="dropbtn">
           </button>
           <div class="menu__content">
@@ -29,7 +33,7 @@
             </a>
           </div>
         </div>
-        <div v-if="user" class="shopping__bag">
+        <div v-if="(user && !isAdmin)" class="shopping__bag">
           <button class="enter__bag" @click="this.$router.push('/basket')">
             <a class="items__counter"><strong>0</strong></a>
           </button>
@@ -68,12 +72,43 @@ export default {
   computed: {
     ...mapState({
       user: state => state.auth.user,
+      isAdmin: state => state.auth.admin
     }),
   },
 };
 </script>
 
 <style scoped>
+.devtools-btn {
+  border-radius: 10px;
+  height: 30px;
+  width: 100px;
+  border: none;
+  background-color: #B39BC8;
+  transition: all .2s;
+  cursor: pointer;
+}
+
+.devtools-btn:hover {
+  background-color: #F172A1;
+}
+
+.logout-btn {
+  border-radius: 10px;
+  margin-left: 15px;
+  height: 30px;
+  width: 100px;
+  border: none;
+  cursor: pointer;
+  transition: all .2s;
+  color: #F0EBF4;
+  background-color: #111;
+}
+
+.logout-btn:hover {
+  background-color: #F172A1;
+}
+
 .header {
   padding-bottom: 0px;
   margin: 0px 2% 0px 2%;
