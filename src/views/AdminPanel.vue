@@ -12,36 +12,39 @@
           Items
         </button>
       </div>
+      <select class="id-filter">
+        <option class="id-filter__item" v-for="item in uniqId">{{item}}</option>
+      </select>
       <div class="admin-panel__body">
+        <div class="comment-header">
+          <p class="cell cell__email ">
+            item ID
+          </p>
+          <p class="cell cell__grade">
+            grade
+          </p>
+          <p class="cell">
+            title
+          </p>
+        </div>
         <ul class="comment-list">
-          <li class="comment-header">
+          <li v-for="comment in arrayOfComments" class="comment">
             <p class="cell cell__email">
-              email
+              {{ comment.itemId }}
             </p>
             <p class="cell cell__grade">
-              grade
+              {{ comment.rate }}
             </p>
-            <p class="cell">
-              title
-            </p>
-          </li>
-          <li v-for="element in arr" class="comment">
-            <p class="cell cell__email">
-              {{ element.email }}
-            </p>
-            <p class="cell cell__grade">
-              {{ element.grade }}
-            </p>
-            <p class="cell">
-              {{ element.title }}
-            </p>
+            <textarea class="cell cell__textarea"
+              >{{comment.review}}</textarea>
             <div class="buttons-review">
               <button class="buttons-review__publish"><img class="review-image" src="@/assets/icons/check.svg"></button>
               <button class="buttons-review__publish"><img class="review-image" src="@/assets/icons/cancel.svg"></button>
-              <button class="buttons-review__publish"><img class="review-image" src="@/assets/delete.svg"></button>
+              <button @click="deleteReview(comment.itemId, comment.userId )" class="buttons-review__publish"><img class="review-image" src="@/assets/delete.svg"></button>
             </div>
           </li>
         </ul>
+        <button @click="check">wefwefwe</button>
       </div>
     </div>
   </app-layout-product-category>
@@ -49,26 +52,42 @@
 
 <script>
 import AppLayoutProductCategory from "@/layouts/AppLayoutProductCategory";
+import { mapState } from 'vuex';
 export default {
   name: 'AdminPanel',
   components: {AppLayoutProductCategory},
   data () {
-    let arr = [
-      {
-        grade: '5',
-        title: '213421',
-        email: '21vsd@gmail.com',
-      },
-      {
-        grade: '1',
-        title: 'tver3r',
-        email: '21v222d@gmffail.com',
-      }
-    ]
     return {
-      arr
     }
   },
+  methods: {
+    deleteReview(itemId, userId) {
+      let commentInfo = {
+        itemId: itemId,
+        userId: userId,
+      }
+      this.$store.dispatch('DELETE_REVIEW', commentInfo)
+    }   
+  },
+  computed: {
+    ...mapState({
+      arrayOfComments: state => state.reviewsForCheck.arrayOfComments
+    }),
+    uniqId() {
+      let result = {};
+      for (let i = 0; i < this.arrayOfComments.length; i ++) {
+        let a = this.arrayOfComments[i].itemId;
+        if (result[a] != undefined)
+          ++result[a];
+        else
+          result[a] = 1;
+      }
+      let resultO = {}
+      //console.log(result)
+      return result
+    }
+  },
+
   mounted() {
     this.$store.dispatch('GET_REVIEWS_FOR_CHECK')
   }
@@ -107,12 +126,15 @@ export default {
 .admin-panel__body {
   margin:10px;
   background-color: #F0EBF4;
-  height: 700px;
+  height: 720px;
 }
 
 .comment-list {
   margin-left: 0;
   padding-left: 0;
+  height: 700px;
+  overflow: scroll; 
+  margin: 0;
 }
 
 .comment-header {
@@ -148,6 +170,16 @@ export default {
   font-weight: bold;
 }
 
+.cell__textarea {
+  padding: 3px;
+  background-color: #F0EBF4;
+  font-size: 13px;
+  margin: 0;
+  text-align: left;
+  resize: none;
+  box-sizing: border-box;
+}
+
 .buttons-review__publish {
   height: 44px;
   width: 44px;
@@ -159,5 +191,16 @@ export default {
   height: 90%;
   width:auto;
   max-width:90%;
+}
+
+.id-filter {
+  background-color: #B39BC8;
+  height: 30px;
+  width: 200px;
+  margin: 10px;
+}
+
+.id-filter__item:hover {
+  background-color: #A1C3D1;
 }
 </style>
