@@ -159,8 +159,8 @@ export default {
   display: flex;
 }
 
-.checkbox-input {
-}
+/* .checkbox-input {
+} */
 
 .checkbox__text {
   color: rgb(38, 38, 38);
@@ -229,9 +229,9 @@ export default {
   filter: invert(59%) sepia(13%) saturate(2349%) hue-rotate(293deg) brightness(101%) contrast(89%);
 }
 
-.button-counter__img {
+/* .button-counter__img {
 
-}
+} */
 
 .price {
   font-size: 25px;

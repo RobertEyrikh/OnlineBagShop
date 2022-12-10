@@ -1,18 +1,20 @@
 export interface reviewInterface {
-  email: string
-  item: string
+  userId: string
+  itemId: string
   review: string
+  rate: number
 }
 
 export class Review {
-  email: string
-  item: string
+  userId: string
+  itemId: string
   review: string
+  rate: number
 
-  constructor(options: Review) {
-    this.email = options.email
-    this.item = options.item
+  constructor(options: reviewInterface) {
+    this.userId = options.userId
+    this.itemId = options.itemId
     this.review = options.review
-    this.email = options.email
+    this.rate= options.rate
   }
 }

@@ -46,7 +46,6 @@ export default {
       }
       commit('PUSH_ALL_ITEMS_CARD', allItemsCard)
     },
-
     async GET_THIS_ITEM ({ commit }, payload) {
       const db = getDatabase();
       const itemRef = ref(db, 'TravelBags')
@@ -58,6 +57,19 @@ export default {
           }
         }
       })
-    }
+    }, 
+    GET_THIS_ITEM0({ commit }, payload) {
+      const db = getDatabase();
+      const itemRef = ref(db, 'TravelBags')
+      onValue(itemRef, (snapshot) => {
+        const data = snapshot.val();
+        for (let key in data) {
+          if (key == payload) {
+            commit('SET_THIS_ITEM', data[key])
+            console.log(data[key])
+          }
+        }
+      })
+    }, 
   }
 }

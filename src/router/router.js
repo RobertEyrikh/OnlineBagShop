@@ -99,7 +99,18 @@ const routes= [
     path: '/adminPanel',
     name: 'AdminPanel',
     component: () => import('../views/AdminPanel')
-  }
+  },
+  {
+    path: '/adminUsersList',
+    name: 'AdminUsersList',
+    component: () => import('../views/AdminPanel/AdminUsersList')
+  },
+  {
+    path: '/adminItemsList',
+    name: 'AdminItemsList',
+    component: () => import('../views/AdminPanel/AdminItemsList')
+  },
+
   
 ]
 

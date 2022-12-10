@@ -1,63 +1,78 @@
 <template>
-  <app-layout-product-category>
-    <div class="admin-panel">
-      <div class="admin-panel__title">
-        <button class="title__button comments">
-          Comments
-        </button>
-        <button class="title__button users">
-          Users
-        </button>
-        <button class="title__button items">
-          Items
-        </button>
-      </div>
+  <admin-devtools-layout>
+    <div class="admin-panel__title">
       <select class="id-filter">
-        <option class="id-filter__item" v-for="item in uniqId">{{item}}</option>
+        <option class="id-filter__item" v-for="(value, name) in uniqId" :key="item">
+          <p>{{name}} {{  }}</p>
+          <p class="value">{{value}}</p>
+        </option>
       </select>
-      <div class="admin-panel__body">
-        <div class="comment-header">
-          <p class="cell cell__email ">
-            item ID
+      <button @click="(isAllComments = false)" :class="{ active: !isAllComments }" class="type-coments__button">
+        OnPending
+      </button>
+      <button @click="(isAllComments = true)" :class="{ active: isAllComments }" class="type-coments__button">
+        All
+      </button>
+    </div>
+    <div class="admin-panel__body">
+      <div class="comment-header">
+        <p class="cell cell__email ">
+          item ID
+        </p>
+        <p class="cell cell__grade">
+          grade
+        </p>
+        <p class="cell">
+          title
+        </p>
+      </div>
+      <ul v-if="isAllComments" class="comment-list">
+        <li v-for="comment in arrayOfAllComments" :key="comment.userId" class="comment">
+          <p class="cell cell__email">
+            {{ comment.itemId }}
           </p>
           <p class="cell cell__grade">
-            grade
+            {{ comment.rate }}
           </p>
-          <p class="cell">
-            title
+          <textarea v-model="comment.review" class="cell cell__textarea">{{ comment.review }}</textarea>
+          <div class="buttons-review">
+            <button @click="publishReview(comment.itemId, comment.userId, comment.rate, comment.review)"
+              class="buttons-review__publish"><img class="review-image" src="@/assets/icons/check.svg"></button>
+            <button @click="deletePublishedReview(comment.itemId, comment.userId)" class="buttons-review__publish"><img
+                class="review-image" src="@/assets/delete.svg"></button>
+          </div>
+        </li>
+      </ul>
+      <ul v-if="!isAllComments" class="comment-list">
+        <li v-for="comment in arrayOfComments" :key="comment.userId" class="comment">
+          <p class="cell cell__email">
+            {{ comment.itemId }}
           </p>
-        </div>
-        <ul class="comment-list">
-          <li v-for="comment in arrayOfComments" class="comment">
-            <p class="cell cell__email">
-              {{ comment.itemId }}
-            </p>
-            <p class="cell cell__grade">
-              {{ comment.rate }}
-            </p>
-            <textarea class="cell cell__textarea"
-              >{{comment.review}}</textarea>
-            <div class="buttons-review">
-              <button class="buttons-review__publish"><img class="review-image" src="@/assets/icons/check.svg"></button>
-              <button class="buttons-review__publish"><img class="review-image" src="@/assets/icons/cancel.svg"></button>
-              <button @click="deleteReview(comment.itemId, comment.userId )" class="buttons-review__publish"><img class="review-image" src="@/assets/delete.svg"></button>
-            </div>
-          </li>
-        </ul>
-        <button @click="check">wefwefwe</button>
-      </div>
+          <p class="cell cell__grade">
+            {{ comment.rate }}
+          </p>
+          <textarea v-model="comment.review" class="cell cell__textarea">{{ comment.review }}</textarea>
+          <div class="buttons-review">
+            <button @click="publishReview(comment.itemId, comment.userId, comment.rate, comment.review)"
+              class="buttons-review__publish"><img class="review-image" src="@/assets/icons/check.svg"></button>
+            <button @click="deleteReview(comment.itemId, comment.userId)" class="buttons-review__publish"><img
+              class="review-image" src="@/assets/delete.svg"></button>
+          </div>
+        </li>
+      </ul>
     </div>
-  </app-layout-product-category>
+  </admin-devtools-layout>
 </template>
 
 <script>
-import AppLayoutProductCategory from "@/layouts/AppLayoutProductCategory";
+import AdminDevtoolsLayout from '@/layouts/AdminDevtoolsLayout.vue';
 import { mapState } from 'vuex';
 export default {
   name: 'AdminPanel',
-  components: {AppLayoutProductCategory},
+  components: { AdminDevtoolsLayout },
   data () {
     return {
+      isAllComments: false,
     }
   },
   methods: {
@@ -67,60 +82,72 @@ export default {
         userId: userId,
       }
       this.$store.dispatch('DELETE_REVIEW', commentInfo)
-    }   
+    }, 
+    deletePublishedReview(itemId, userId) {
+      let commentInfo = {
+        itemId: itemId,
+        userId: userId,
+      }
+      this.$store.dispatch('DELETE_PUBLISHED_REVIEW', commentInfo)
+    },
+    publishReview(itemId, userId, rate, comment) {
+      let commentInfo = {
+        itemId: itemId,
+        userId: userId,
+        rate: rate,
+        comment: comment,
+      }
+      this.$store.dispatch('PUBLISH_REVIEW', commentInfo)
+    }
   },
   computed: {
     ...mapState({
-      arrayOfComments: state => state.reviewsForCheck.arrayOfComments
+      arrayOfComments: state => state.reviewsForCheck.arrayOfComments,
+      arrayOfAllComments: state => state.reviewsForCheck.arrayOfAllComments
     }),
     uniqId() {
       let result = {};
-      for (let i = 0; i < this.arrayOfComments.length; i ++) {
-        let a = this.arrayOfComments[i].itemId;
+      for (let i = 0; i < this.arrayOfComments.length; i ++) {       
+        let a = this.arrayOfComments[i].itemId;        
         if (result[a] != undefined)
           ++result[a];
         else
           result[a] = 1;
-      }
-      let resultO = {}
-      //console.log(result)
+      } 
+      
+      //let resultO = {}
+      
       return result
     }
   },
 
   mounted() {
     this.$store.dispatch('GET_REVIEWS_FOR_CHECK')
+    this.$store.dispatch('GET_ALL_REVIEWS')
   }
 }
 
 </script>
 
 <style scoped>
-.admin-panel{
-  margin: 40px 2% 40px 2%;
-  background-color: #A1C3D1;
-  padding: 20px 30px 20px 30px;
-  border-radius: 50px;
-}
-
 .admin-panel__title {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-.title__button {
-  height: 40px;
+.type-coments__button {
+  height: 30px;
   border: none;
   margin: 10px;
-  font-size: 18px;
+  font-size: 15px;
   border-radius: 10px;
-  background-color: #B39BC8;
+  background-color: #F172A1;
   transition: all .2s;
   cursor: pointer;
 }
 
-.title__button:hover {
-  background-color: #F172A1;
+.type-coments__button:hover {
+  background-color: #E64398;
 }
 
 .admin-panel__body {
@@ -150,7 +177,7 @@ export default {
 .comment {
   list-style-type: none;
   display: grid;
-  grid-template-columns: 200px 100px 1fr 44px;
+  grid-template-columns: 200px 100px minmax(200px, 1fr) 66px;
   height: 132px;
 }
 
@@ -181,16 +208,16 @@ export default {
 }
 
 .buttons-review__publish {
-  height: 44px;
-  width: 44px;
+  height: 66px;
+  width: 66px;
 }
 
 .review-image {
   box-sizing: border-box;
   object-fit: cover;
-  height: 90%;
+  height: 70%;
   width:auto;
-  max-width:90%;
+  max-width:70%;
 }
 
 .id-filter {
@@ -200,7 +227,17 @@ export default {
   margin: 10px;
 }
 
+
 .id-filter__item:hover {
   background-color: #A1C3D1;
+}
+
+.value {
+  background-color: #E64398;
+  color: red;
+}
+
+.active {
+  background-color: #E64398;
 }
 </style>

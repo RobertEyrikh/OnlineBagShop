@@ -8,7 +8,10 @@
           </div>
           <div class="navbtn" @click="this.$router.push('/purchases')"><img src="../assets/user/purchases.svg" />Purchases
           </div>
-          <div class="dropdown">
+          <div class="navbtn" @click="this.$router.push('/reviews')"> <img src="../assets/user/feedback.svg" /> Feedback
+
+          </div>
+          <!-- <div class="dropdown">
             <button class="dropbtn">
               <img class="feedback" src="../assets/user/feedback.svg" />
               Feedback
@@ -18,7 +21,7 @@
               <a @click="this.$router.push('/reviews')">Reviews</a>
               <a @click="this.$router.push('/questions')">Questions</a>
             </div>
-          </div>
+          </div> -->
           <div class="navbtn" @click="this.$router.push('/profile')"><img src="../assets/user/profile.svg" />Profile</div>
         </div>
       </div>

@@ -51,21 +51,28 @@
         </div>
         <add-review-popup :is-open="isPopupOpen" :itemId="thisItem.id" @close="isPopupOpen = false"/>
         <ul class="comments-list">
-          <li class="comment-body">
+          <li v-for="comment in arrayOfComments" :key="comment.comment"  class="comment-body">
             <div class="comment-body__title">
-              <p class="comment-email">Email</p>
+              <p class="comment-email">{{ getUserInfoByUid(comment.userId) }}</p>
               <p class="comment-data">10.08.2022</p>
             </div>
             <div class="comment-grade">
-              10/10
+              <div class="rating-result">
+                <span :class="{ active: comment.rate >= 1}"></span>
+                <span :class="{ active: comment.rate >= 2}"></span>
+                <span :class="{ active: comment.rate >= 3}"></span>
+                <span :class="{ active: comment.rate >= 4}"></span>
+                <span :class="{ active: comment.rate >= 5}"></span>
+              </div>
             </div>
             <div class="comment-body__text">
-              <p>This item is very impressive. I was like it.</p>
+              <p>{{comment.comment}}</p>
             </div>
           </li>
         </ul>
       </div>
     </div>
+    
   </app-layout-product-category>
 </template>
 
@@ -85,11 +92,12 @@ export default {
     }
   },
   methods: {
+    
     addToWishlist(id) {
       this.$store.dispatch("ADD_ITEM_TO_WISHLIST", id)
     },
-    basket() {
-      console.log(this.sameTypeItems)
+    check(id) {
+      console.log(this.users[id])
     },
     isItemInBasket(id) {
       return this.sameTypeItems.indexOf(id)
@@ -101,7 +109,15 @@ export default {
     },
     addToBasket(id) {
       this.$store.dispatch("ADD_TO_BASKET", id)
+      
     },
+    getUserInfoByUid(id) {
+      if (this.users[id]) {
+        if (this.users[id].name) {
+          return this.users[id].name
+        } else return this.users[id].email       
+      }    
+    }
   },
 
   computed: {
@@ -110,7 +126,9 @@ export default {
       wishlist: state => [...state.wishlist.wishlist],
       wishlistItemsId: state => [...state.wishlist.wishlistItemsId],
       sameTypeItems: state => [...state.basket.sameTypeItems],
-      isAdmin: state => state.auth.admin
+      isAdmin: state => state.auth.admin,
+      arrayOfComments: state => state.reviews.arrayOfComments,
+      users: state => state.userInfo.users
     }),
     getSameTypesBasket() {
       this.$store.dispatch("GET_SAME_TYPE_ITEMS")
@@ -120,6 +138,8 @@ export default {
   mounted() {
     this.$store.dispatch('GET_THIS_ITEM', this.id)
     this.$store.dispatch("GET_ITEM_FROM_WISHLIST")
+    this.$store.dispatch("GET_REVIEWS_OF_ITEM", this.id)
+    this.$store.dispatch("GET_ALL_USERS")
   },
 
   // beforeUpdate() {
@@ -129,6 +149,26 @@ export default {
 </script>
 
 <style scoped>
+.rating-result {
+  width: 265px;
+  margin: 0;
+}
+
+.rating-result span {
+  padding: 0;
+  font-size: 24px;
+  margin: 3px 0px;
+  line-height: 1;
+  color: #A1C3D1;
+}
+
+.rating-result>span:before {
+  content: '★';
+}
+
+.rating-result>span.active {
+  color: #B39BC8;;
+}
 .item-body{
   margin: 10px 2% 40px 2%;
   padding: 10px 30px 10px 30px;
@@ -147,9 +187,10 @@ export default {
 .item-image {
   box-sizing: border-box;
   object-fit: cover;
-  height: 100%;
-  width:auto;
+  height: auto;
+  width:100%;
   max-width:100%;
+  max-height: 460px;
   margin-right: 10px;
   border-radius: 10px;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
@@ -251,6 +292,7 @@ export default {
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   list-style-type: none;
   padding: 15px;
+  margin-bottom: 15px;
 }
 
 .comments-list {

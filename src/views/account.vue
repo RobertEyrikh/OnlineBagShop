@@ -10,6 +10,11 @@
           </div>
           <div @click="this.$router.push('/wishlist')" class="account__wishlist">
             <h1>Wishlist:</h1>
+            <div class="wishlist-brief">
+              <div v-for='item in wishlist'>
+                <img :src="`${item.image}`" class="wishlist-image" alt="bag">
+              </div>
+            </div>
           </div>
           <div @click="this.$router.push('/purchases')" class="account__purchase">
             <h1>Purchases:</h1>
@@ -39,11 +44,13 @@ export default {
       email: state => state.userInfo.email,
       name: state => state.userInfo.name,
       phone: state => state.userInfo.phone,
+      wishlist: state => [...state.wishlist.wishlist],
     }),
   },
 
   mounted() {
-    return this.$store.dispatch("GET_USER_INFO")
+    this.$store.dispatch("GET_USER_INFO")
+    this.$store.dispatch("GET_ITEM_FROM_WISHLIST")
   }
 
   }
@@ -76,5 +83,20 @@ export default {
 
 .account__profile > div {
   padding: 5px;
+}
+
+.wishlist-brief {
+  display: flex;
+  overflow: hidden;
+  height: 55px;
+}
+
+.wishlist-image {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  border-radius: 50px;
+  margin-right: -20px;
+  border: 1px solid ;
 }
 </style>

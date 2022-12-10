@@ -103,6 +103,7 @@ export default {
 
 <style scoped>
 .review-popup {
+  z-index: 2;
   min-height: 100%;
   display: flex;
   align-items: center;

@@ -8,7 +8,7 @@
         <div class="wishlist-items">
           <ul class="item-list">
             <li v-for="item in wishlist" class="item-in-wishlist">
-              <div class="wishlist-item__image">
+              <div @click="this.$router.push(`/${item.id}`)" class="wishlist-item__image">
                 <img :src="`${item.image}`" class="wishlist-image" alt="bag">
               </div>
               <p class="item-price">
@@ -122,6 +122,7 @@ export default {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-column-gap: 20px;
   justify-items: center;
+  grid-row-gap: 20px;
 }
 
 .item-in-wishlist {
@@ -142,6 +143,7 @@ export default {
 
 .wishlist-item__image {
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .item-title {

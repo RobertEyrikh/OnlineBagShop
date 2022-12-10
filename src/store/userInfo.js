@@ -10,6 +10,7 @@ export default {
     email: null,
     birthday: null,
     authError: null,
+    users: [],
   },
 
   mutations: {
@@ -30,6 +31,9 @@ export default {
     },
     SET_AUTH_ERROR(state, payload) {
       state.authError = payload
+    },
+    SET_ALL_USERS(state, payload) {
+      state.users = payload
     }
   },
 
@@ -112,5 +116,16 @@ export default {
         }
       })
     }, 
+
+    GET_ALL_USERS({ commit }) {
+      let userInfo = []
+      const db = getDatabase();
+      const dbRef = ref(getDatabase())
+      const userRef = ref(db, 'Users/');
+      onValue(userRef, (snapshot) => {
+        let data = snapshot.val()
+        commit('SET_ALL_USERS', data)
+      })
+    }
   }
 }

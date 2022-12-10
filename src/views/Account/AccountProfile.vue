@@ -139,7 +139,7 @@ export default {
 .profile-body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  margin: 10px 4% 40px 4%;
+  margin: 10px 5% 40px 5%;
   background-color: #A1C3D1;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
