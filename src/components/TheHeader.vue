@@ -1,42 +1,40 @@
 <template>
   <header class="header">
     <nav>
-      <ul class="info__buttons">
-        <li> <a href="/"><img class="main__image" src="../assets/logo.svg"></a></li>
-        <li> <a href="/about">About </a> </li>
-        <li> <a href="/services">Services</a> </li>
-        <li> <a href="/delivery">Delivery</a> </li>
-        <div class="push"> </div>
-        <button v-if="!user" class= "btn-in" @click="isSignInOpen = true"> Sign in </button>
-        <SignInPopup
-          :is-open="isSignInOpen"
-          @close= "isSignInOpen = false"
-        >
-        </SignInPopup>
-        <button v-if="!user" class= "btn-up" @click="isSignUpOpen = true"> Sign up </button>
-        <SignUpPopup
-          :is-open="isSignUpOpen"
-          @close= "isSignUpOpen = false"
-        >
-        </SignUpPopup>
-        <div v-if="isAdmin" class="admin-block">
-          <button @click="this.$router.push('/adminPanel')" class="devtools-btn">Devtools</button>
-          <button @click="logout" class="logout-btn">Logout</button>
+      <ul class="header__tiпшеtle">
+        <div class="header-links">
+          <li> <a href="/"><img class="main__image" src="../assets/logo.svg"></a></li>
+          <li> <a href="/about">About </a> </li>
+          <li> <a href="/services">Services</a> </li>
+          <li> <a href="/delivery">Delivery</a> </li>
         </div>
-        <div v-if="(user && !isAdmin)" class="user__menu">
-          <button class="dropbtn">
-          </button>
-          <div class="menu__content">
-            <a @click="this.$router.push('/account')"> Account </a>
-            <a href="#"> 
-              <div v-if="user" @click="logout">Logout</div>
-            </a>
+        <input class="search">
+        <div class="header-buttons">
+          <button v-if="!user" class="btn-in" @click="isSignInOpen = true"> Sign in </button>
+          <SignInPopup :is-open="isSignInOpen" @close="isSignInOpen = false">
+          </SignInPopup>
+          <button v-if="!user" class="btn-up" @click="isSignUpOpen = true"> Sign up </button>
+          <SignUpPopup :is-open="isSignUpOpen" @close="isSignUpOpen = false">
+          </SignUpPopup>
+          <div v-if="isAdmin" class="admin-block">
+            <button @click="this.$router.push('/adminPanel')" class="devtools-btn">Devtools</button>
+            <button @click="logout" class="logout-btn">Logout</button>
           </div>
-        </div>
-        <div v-if="(user && !isAdmin)" class="shopping__bag">
-          <button class="enter__bag" @click="this.$router.push('/basket')">
-            <a class="items__counter"><strong>0</strong></a>
-          </button>
+          <div v-if="(user && !isAdmin)" class="user__menu">
+            <button class="dropbtn">
+            </button>
+            <div class="menu__content">
+              <a @click="this.$router.push('/account')"> Account </a>
+              <a href="#">
+                <div v-if="user" @click="logout">Logout</div>
+              </a>
+            </div>
+          </div>
+          <div v-if="(user && !isAdmin)" class="shopping__bag">
+            <button class="enter__bag" @click="this.$router.push('/basket')">
+              <a class="items__counter"><strong>{{ getTotalQty() }}</strong></a>
+            </button>
+          </div>
         </div>
       </ul>
     </nav>
@@ -61,20 +59,37 @@ export default {
   name: "TheHeader",
   components: { SignInPopup, SignUpPopup },
   data() {
-    return { isSignInOpen: false, isSignUpOpen: false };
+    return { 
+      isSignInOpen: false,
+      isSignUpOpen: false,
+      qty: 0, 
+    };
   },
   methods: {
     logout() {
         this.$store.dispatch('logout')
         this.$router.push('/')
     },
+    getTotalQty() {
+      let qty = 0
+      for (let i = 0; i < this.basket.length; i++) {
+        qty += this.itemsQty[this.basket[i].id]
+      }
+      return qty
+    }
   },
   computed: {
     ...mapState({
+      basket: state => [...state.basket.basket],
       user: state => state.auth.user,
-      isAdmin: state => state.auth.admin
+      isAdmin: state => state.auth.admin,
+      itemsQty: state => state.basket.itemsQty,
     }),
   },
+  mounted() {
+    this.$store.dispatch("GET_ITEMS_QTY")
+    this.$store.dispatch("GET_BASKET")
+  }
 };
 </script>
 
@@ -122,15 +137,32 @@ export default {
   height: auto;
 }
 
-.info__buttons {
+.header__title {
   padding-left: 0px;
   list-style-type: none;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   align-items: center;
   gap: 15px;
   transition: all linear .2s;
   border-bottom: 1px solid #111;
   padding-bottom: 5px;
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  width: 290px;
+  height: 30px;
+  border-radius: 10px;
+}
+.header-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .push{
@@ -150,6 +182,7 @@ export default {
 .btn-in {
   color: #F0EBF4;
   background-color: #111111;
+  margin-right: 20px;
 }
 
 .btn-up {
@@ -157,7 +190,7 @@ export default {
   background-color: #F0EBF4;
 }
 
-.info__buttons > li > a:hover {
+.header-links > li > a:hover {
   color: #E64398;
 }
 
@@ -166,12 +199,13 @@ export default {
   background-color: #F172A1;
 }
 
-.info__buttons > li > a {
+.header-links > li > a {
   display:block;
   text-transform: uppercase;
   text-decoration: none;
   color: #111;
   transition: color .1s ease-in-out;
+  padding-right: 10px;
 }
 
 .btn-block{
@@ -220,8 +254,16 @@ export default {
   background-repeat: no-repeat;
   background-image: url(../assets/userIcon.svg);
   transition: filter .1s ease-in-out;
+  margin-right: 10px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: #F0EBF4;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
 }
-.user__menu .dropbtn {
+.user__menu {
   font-size: 16px;
   border: none;
   outline: none;
@@ -287,7 +329,7 @@ export default {
 
 .items__counter {
   font-size: 20px;
-  color: #111;
+  color: rgb(168, 0, 0);
   position: relative;
   top: -15px;
   right: -10px;

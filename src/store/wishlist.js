@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, update, remove, onValue, get, child } from "firebase/database";
+import { getDatabase, ref, update, onValue, get, child } from "firebase/database";
 
 export default {
   state: {

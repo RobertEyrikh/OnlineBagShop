@@ -39,6 +39,7 @@
         <div class="review-item__buttons">
           <button class="cancel-button">Cancel</button>
           <button class="send-button" @click="sendFeedback">Send</button>
+          <button @click="check">check</button>
         </div>     
       </div>
     </div>
@@ -53,7 +54,6 @@ export default {
     return{
       rate: '',
       review: '',
-      itemId: this.itemId,
     }
   },
   props: {
@@ -71,6 +71,9 @@ export default {
     send: null,
   },
   methods: {
+    check() {
+      console.log(this.itemId)
+    },
     close() {
       this.$emit("close")
     },

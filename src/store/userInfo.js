@@ -118,9 +118,7 @@ export default {
     }, 
 
     GET_ALL_USERS({ commit }) {
-      let userInfo = []
       const db = getDatabase();
-      const dbRef = ref(getDatabase())
       const userRef = ref(db, 'Users/');
       onValue(userRef, (snapshot) => {
         let data = snapshot.val()

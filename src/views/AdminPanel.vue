@@ -1,21 +1,27 @@
 <template>
   <admin-devtools-layout>
     <div class="admin-panel__title">
-      <select class="id-filter">
-        <option class="id-filter__item" v-for="(value, name) in uniqId" :key="item">
-          <p>{{name}} {{  }}</p>
-          <p class="value">{{value}}</p>
+      <select v-if="!isPublishedComments" class="id-filter" v-model="currentFilter" @change="commentFilter(currentFilter)">
+        <option>All</option>
+        <option class="id-filter__item" v-for="(value, name) in uniqId" :key="name">
+          {{name}} {{value}}
         </option>
       </select>
-      <button @click="(isAllComments = false)" :class="{ active: !isAllComments }" class="type-coments__button">
-        OnPending
+      <select v-if="isPublishedComments" class="id-filter" v-model="publishedCommentFilter" @change="commentPublishedFilter(publishedCommentFilter)">
+        <option>All</option>
+        <option class="id-filter__item" v-for="(value, name) in uniqPublishedId" :key="name">
+          {{name}} {{value}}
+        </option>
+      </select>
+      <button @click="(isPublishedComments = false)" :class="{ active: !isPublishedComments }" class="type-coments__button">
+        On pending
       </button>
-      <button @click="(isAllComments = true)" :class="{ active: isAllComments }" class="type-coments__button">
-        All
+      <button @click="(isPublishedComments = true)" :class="{ active: isPublishedComments }" class="type-coments__button">
+        Published
       </button>
     </div>
     <div class="admin-panel__body">
-      <div class="comment-header">
+      <div class="list-title">
         <p class="cell cell__email ">
           item ID
         </p>
@@ -26,8 +32,8 @@
           title
         </p>
       </div>
-      <ul v-if="isAllComments" class="comment-list">
-        <li v-for="comment in arrayOfAllComments" :key="comment.userId" class="comment">
+      <ul v-if="isPublishedComments" class="comment-list">
+        <li v-for="comment in publishedArray" :key="comment.userId" class="comment">
           <p class="cell cell__email">
             {{ comment.itemId }}
           </p>
@@ -39,12 +45,12 @@
             <button @click="publishReview(comment.itemId, comment.userId, comment.rate, comment.review)"
               class="buttons-review__publish"><img class="review-image" src="@/assets/icons/check.svg"></button>
             <button @click="deletePublishedReview(comment.itemId, comment.userId)" class="buttons-review__publish"><img
-                class="review-image" src="@/assets/delete.svg"></button>
+              class="review-image" src="@/assets/delete.svg"></button>
           </div>
         </li>
       </ul>
-      <ul v-if="!isAllComments" class="comment-list">
-        <li v-for="comment in arrayOfComments" :key="comment.userId" class="comment">
+      <ul v-if="!isPublishedComments" class="comment-list">
+        <li v-for="comment in resultArray" :key="comment.userId" class="comment">
           <p class="cell cell__email">
             {{ comment.itemId }}
           </p>
@@ -66,16 +72,37 @@
 
 <script>
 import AdminDevtoolsLayout from '@/layouts/AdminDevtoolsLayout.vue';
+import { opaqueType } from '@babel/types';
 import { mapState } from 'vuex';
 export default {
   name: 'AdminPanel',
-  components: { AdminDevtoolsLayout },
+  components: { AdminDevtoolsLayout, opaqueType },
   data () {
     return {
-      isAllComments: false,
+      isPublishedComments: false,
+      currentFilter: 'All',
+      resultArray: this.arrayOfComments,
+      publishedArray: this.arrayOfAllComments ,
+      publishedCommentFilter: 'All',
     }
   },
   methods: {
+    commentFilter(dirtyId) {
+      if(dirtyId == 'All') {
+        this.resultArray = this.arrayOfComments
+      } else {
+        let id = dirtyId.split(' ')[0]
+        this.resultArray = this.arrayOfComments.filter((elem) => elem.itemId == id) 
+      }     
+    },
+    commentPublishedFilter(dirtyId) {
+      if (dirtyId == 'All') {
+        this.publishedArray = this.arrayOfAllComments
+      } else {
+        let id = dirtyId.split(' ')[0]
+        this.publishedArray = this.arrayOfAllComments.filter((elem) => elem.itemId == id)
+      }
+    },
     deleteReview(itemId, userId) {
       let commentInfo = {
         itemId: itemId,
@@ -114,9 +141,17 @@ export default {
         else
           result[a] = 1;
       } 
-      
-      //let resultO = {}
-      
+      return result
+    },
+    uniqPublishedId() {
+      let result = {};
+      for (let i = 0; i < this.arrayOfAllComments.length; i++) {
+        let a = this.arrayOfAllComments[i].itemId;
+        if (result[a] != undefined)
+          ++result[a];
+        else
+          result[a] = 1;
+      }
       return result
     }
   },
@@ -164,7 +199,7 @@ export default {
   margin: 0;
 }
 
-.comment-header {
+.list-title {
   background-color: #B39BC8;
   list-style-type: none;
   display: grid;

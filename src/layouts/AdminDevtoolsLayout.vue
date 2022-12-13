@@ -31,6 +31,32 @@ export default {
 }
 </script>
 
+<style>
+@keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  display: flex;
+  border: 10px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #F172A1;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: loader-spin 2s linear infinite;
+  align-self: center;
+  margin-top: 20px;
+  margin-left: 20px
+}
+
+</style>
+
 <style scoped>
 .admin-panel {
   margin: 40px 2% 40px 2%;

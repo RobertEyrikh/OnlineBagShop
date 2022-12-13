@@ -1,22 +1,21 @@
 <template>
   <app-layout-product-category>
     <div class="wallets-body">
-      Wallets
+      <get-items-card :category="`wallets`">
+      </get-items-card>
     </div>
   </app-layout-product-category>
 </template>
 
 <script>
+import GetItemsCard from "@/components/GetItemsCard.vue";
 import AppLayoutProductCategory from "@/layouts/AppLayoutProductCategory";
 export default {
-  components: { AppLayoutProductCategory },
+  components: { AppLayoutProductCategory, GetItemsCard },
   name: "wallets"
 }
 </script>
 
 <style scoped>
 
-.wallets-body {
-  padding: 5%
-}
 </style>

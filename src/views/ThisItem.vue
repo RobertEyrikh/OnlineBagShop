@@ -14,9 +14,8 @@
             price: ${{thisItem.price}}
           </p>
           <p class="description-text description-body">
-            {{thisItem.title}}
+            {{thisItem.body}}
           </p>
-        
           <div class="buttons-block">
             <button 
             v-if=!isAdmin
@@ -49,8 +48,21 @@
           <p class="comments-title">Feedback</p>
           <button @click="isPopupOpen=true" class="add-comment">Add a review</button>
         </div>
+        <div class="comment-grade">
+          <div class="rating-result">
+            <span :class="{ active: averageRating >= 1}"></span>
+            <span :class="{ active: averageRating >= 2}"></span>
+            <span :class="{ active: averageRating >= 3}"></span>
+            <span :class="{ active: averageRating >= 4}"></span>
+            <span :class="{ active: averageRating >= 5}"></span>
+            {{averageRating}}
+          </div>
+        </div>
         <add-review-popup :is-open="isPopupOpen" :itemId="thisItem.id" @close="isPopupOpen = false"/>
         <ul class="comments-list">
+          <li class="comment-body" v-if="arrayOfComments.length == 0">
+            <p >No comments yet, add yours!</p>
+          </li>
           <li v-for="comment in arrayOfComments" :key="comment.comment"  class="comment-body">
             <div class="comment-body__title">
               <p class="comment-email">{{ getUserInfoByUid(comment.userId) }}</p>
@@ -71,8 +83,7 @@
           </li>
         </ul>
       </div>
-    </div>
-    
+    </div>    
   </app-layout-product-category>
 </template>
 
@@ -88,11 +99,10 @@ export default {
     return {
       id: this.$route.params['id'],
       isPopupOpen: false,
-      itemId: '',
+      itemId: '1',
     }
   },
-  methods: {
-    
+  methods: {   
     addToWishlist(id) {
       this.$store.dispatch("ADD_ITEM_TO_WISHLIST", id)
     },
@@ -132,6 +142,14 @@ export default {
     }),
     getSameTypesBasket() {
       this.$store.dispatch("GET_SAME_TYPE_ITEMS")
+    },
+    averageRating() {
+      if(this.arrayOfComments.length > 0) {
+        let result = this.arrayOfComments.reduce(function(sum, elem) {
+          return sum += +elem.rate
+        }, 0);
+        return result / this.arrayOfComments.length
+      }
     }
   },
 
@@ -141,10 +159,6 @@ export default {
     this.$store.dispatch("GET_REVIEWS_OF_ITEM", this.id)
     this.$store.dispatch("GET_ALL_USERS")
   },
-
-  // beforeUpdate() {
-  //   this.$store.dispatch("GET_SAME_TYPE_ITEMS")
-  // }
 }
 </script>
 
@@ -167,7 +181,7 @@ export default {
 }
 
 .rating-result>span.active {
-  color: #B39BC8;;
+  color: #B39BC8;
 }
 .item-body{
   margin: 10px 2% 40px 2%;
@@ -189,14 +203,14 @@ export default {
   object-fit: cover;
   height: auto;
   width:100%;
-  max-width:100%;
-  max-height: 460px;
+  height: 100%;
   margin-right: 10px;
   border-radius: 10px;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .item-description__text {
+  position: relative;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   background-color: #B39BC8;
@@ -219,6 +233,8 @@ export default {
 }
 
 .buttons-block {
+  position: absolute;
+  bottom: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
@@ -233,6 +249,7 @@ export default {
   transition: all .2s;
   padding: 0;
   cursor: pointer;
+  margin-right: 40px;
 }
 
 .basket-button {

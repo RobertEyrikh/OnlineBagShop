@@ -23,34 +23,44 @@ export default {
   actions: {
     async GET_SAME_TYPE_ITEMS({ commit }, payload) {
       const db = getDatabase()
-      let user = getAuth().currentUser
-      const userRef = ref(db, 'Users/' + user.uid);
-      onValue(userRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data.items) {
-          let sameTypeItems = data.items.filter(function (item, pos) {
-            return data.items.indexOf(item) == pos;
+      const auth = getAuth()
+      onAuthStateChanged(auth, async user => {
+        if (user) {
+          const userRef = ref(db, 'Users/' + user.uid);
+          onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data.items) {
+              let sameTypeItems = data.items.filter(function (item, pos) {
+                return data.items.indexOf(item) == pos;
+              })
+              commit('SET_SAME_TYPES_ITEMS', sameTypeItems)
+            }
           })
-          commit('SET_SAME_TYPES_ITEMS', sameTypeItems)
-        }       
+        }
       })
     },
     async GET_ITEMS_QTY({ commit }, payload) {
       const db = getDatabase()
+      const auth = getAuth()
       let user = getAuth().currentUser
-      const userRef = ref(db, 'Users/' + user.uid);
-      onValue(userRef, (snapshot) => {
-        const data = snapshot.val();
-        let itemsQty = {}
-        for (let elem of data.items) {
-          if (itemsQty[elem] === undefined) {
-            itemsQty[elem] = 1;
-          } else {
-            itemsQty[elem]++;
-          }
+      onAuthStateChanged(auth, async user => {
+        if (user) {
+          const userRef = ref(db, 'Users/' + user.uid);
+          onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            let itemsQty = {}
+            for (let elem of data.items) {
+              if (itemsQty[elem] === undefined) {
+                itemsQty[elem] = 1;
+              } else {
+                itemsQty[elem]++;
+              }
+            }
+            commit('SET_ITEMS_QTY', itemsQty)
+          })
         }
-        commit('SET_ITEMS_QTY', itemsQty)   
       })
+      
     },
     async REMOVE_SAME_TYPES_ITEMS({ commit }, payload) {
       const db = getDatabase()
@@ -102,7 +112,7 @@ export default {
       const db = getDatabase();
       const auth = getAuth()
       onAuthStateChanged(auth, async user => {
-        if (user) {
+        if (user.uid !== 'SyQvjsJTdjfabSrwlLJX0rlFv5A3') {
           const itemRef = ref(db, 'TravelBags')
           const userRef = ref(db, 'Users/' + user.uid);
           onValue(userRef, (snapshot) => {

@@ -35,9 +35,9 @@
               </div>
             </li>
           <!-- </transition-group> -->
-          <get-items-card >
-          </get-items-card>
-        </ul>
+          </ul>
+          <get-items-card :category="`travelBags`">
+          </get-items-card>  
       </div>
     </main>
   </app-layout-product-category>
@@ -91,6 +91,7 @@ export default {
         title: this.title,
         shoppingBag: '../assets/shoppingBag.webp',
       }
+      // console.log(itemCard)
       this.$store.commit("SET_IMAGE", this.file)
       this.$store.dispatch("POST_ITEMS_ON_API", itemCard)
       this.isAddPostVisible = !this.isAddPostVisible
@@ -122,14 +123,14 @@ export default {
       isAdmin: state => state.auth.admin
     }),
     
-    getUser(){
-      this.$store.dispatch("GET_ITEMS_FROM_API")
-    }
+    // getUser(){
+    //   this.$store.dispatch("GET_ITEMS_FROM_API")
+    // }
   },
 
-  mounted () {
-    this.$store.dispatch("GET_ITEMS_FROM_API")
-  }
+  // mounted () {
+  //   this.$store.dispatch("GET_ITEMS_FROM_API")
+  // }
 }
 </script>
 

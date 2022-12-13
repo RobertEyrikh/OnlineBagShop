@@ -44,7 +44,8 @@ export default {
         price: payload.price,
         id: payload.id,
         title: payload.title,
-        shoppingBag: payload.shoppingBag,
+        category: payload.category,
+        body: payload.body
     })
       const imageRef = state.imageRef
       const storageRef = storageReference(getStorage(), 'files/' + newItem.image);
