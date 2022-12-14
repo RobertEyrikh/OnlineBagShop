@@ -21,6 +21,11 @@ export default {
   },
 
   actions: {
+    BUY_ITEMS({ commit, state }, payload) {
+      console.log(state.itemsQty)
+
+    },
+
     async GET_SAME_TYPE_ITEMS({ commit }, payload) {
       const db = getDatabase()
       const auth = getAuth()
@@ -48,15 +53,19 @@ export default {
           const userRef = ref(db, 'Users/' + user.uid);
           onValue(userRef, (snapshot) => {
             const data = snapshot.val();
-            let itemsQty = {}
-            for (let elem of data.items) {
-              if (itemsQty[elem] === undefined) {
-                itemsQty[elem] = 1;
-              } else {
-                itemsQty[elem]++;
+            if(data) {
+              if (data.items) {
+                let itemsQty = {}
+                for (let elem of data.items) {
+                  if (itemsQty[elem] === undefined) {
+                    itemsQty[elem] = 1;
+                  } else {
+                    itemsQty[elem]++;
+                  }
+                }
+                commit('SET_ITEMS_QTY', itemsQty)
               }
             }
-            commit('SET_ITEMS_QTY', itemsQty)
           })
         }
       })

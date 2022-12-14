@@ -1,14 +1,14 @@
 <template>
   <header class="header">
     <nav>
-      <ul class="header__tiпшеtle">
+      <ul class="header__title">
         <div class="header-links">
           <li> <a href="/"><img class="main__image" src="../assets/logo.svg"></a></li>
           <li> <a href="/about">About </a> </li>
           <li> <a href="/services">Services</a> </li>
           <li> <a href="/delivery">Delivery</a> </li>
         </div>
-        <input class="search">
+        <input class="search" placeholder="Enter product name">
         <div class="header-buttons">
           <button v-if="!user" class="btn-in" @click="isSignInOpen = true"> Sign in </button>
           <SignInPopup :is-open="isSignInOpen" @close="isSignInOpen = false">
@@ -67,8 +67,10 @@ export default {
   },
   methods: {
     logout() {
-        this.$store.dispatch('logout')
-        this.$router.push('/')
+      this.$store.dispatch('logout')
+      this.$router.push('/')
+      this.$store.commit('SET_COMMENTS_TO_NULL')
+      this.$store.commit('SET_PENDING_COMMENTS_TO_NULL')
     },
     getTotalQty() {
       let qty = 0
@@ -158,6 +160,15 @@ export default {
   width: 290px;
   height: 30px;
   border-radius: 10px;
+  opacity: 40%;
+  border-style: none;
+  transition: all ease-in-out .4s;
+}
+
+.search:focus {
+  opacity: 100%;
+  box-shadow: 0.3px 0.3px 0.3px 0.3px rgba(0, 0, 0, 0.2);
+  outline: none;
 }
 .header-buttons {
   display: flex;

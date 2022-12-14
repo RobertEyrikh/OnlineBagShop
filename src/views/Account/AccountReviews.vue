@@ -2,6 +2,11 @@
   <account-layout-category>
     <div class="reviews-page">
       <ul class="comments-list">
+        <li v-if="!pendingCommentsOfUser && !commentsOfUser">
+          <div class="comment-body__text">
+            <p>fdsfsd</p>
+          </div>
+        </li>
         <li v-for="comment in pendingCommentsOfUser" :key="comment.itemId" class="comment-body">
           <div class="comment-body__title">
             <p class="comment-item">{{comment.itemId}}</p>
@@ -68,8 +73,7 @@ export default {
 
   mounted() {
     this.$store.dispatch("GET_REVIEWS_OF_USER")
-  }
-
+  },
 }
 </script>
 

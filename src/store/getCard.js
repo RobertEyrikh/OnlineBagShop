@@ -86,7 +86,13 @@ export default {
         const data = snapshot.val();
         for (let key in data) {
           if (key == payload) {
-            commit('SET_THIS_ITEM', data[key])
+            getDownloadURL(storageReference(getStorage(), 'files/' + data[key].image))
+            .then((url) => {
+              data[key].image = url
+              commit('SET_THIS_ITEM', data[key])
+            })
+            // console.log(data[key])
+           // commit('SET_THIS_ITEM', data[key])
           }
         }
       })

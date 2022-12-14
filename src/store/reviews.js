@@ -26,6 +26,12 @@ export default {
     SET_PENDING_COMMENTS_OF_USER(state, payload) {
       state.pendingCommentsOfUser = payload
     },
+    SET_COMMENTS_TO_NULL(state) {
+      state.arrayOfComments = null
+    },
+    SET_PENDING_COMMENTS_TO_NULL(state) {
+      state.pendingCommentsOfUser = null
+    }
   },
   actions: {
     GET_REVIEWS_OF_USER({ commit }, payload) {

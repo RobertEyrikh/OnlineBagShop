@@ -1,6 +1,8 @@
 <template>
   <div v-if="isOpen" @click="close" class="backdrop">
-    <div class="item-popup">
+    <div class="item-popup" :class="{loading: isUploading}">
+      <div v-if="isUploading" class="loader waiting_upload"></div>
+      <div v-if="isUploading" class="upload-wrapper"></div>
       <div class="item-popup__content" @click.stop>
         <div class="input-image">
           <img  class="input-image__img" :src="`${imagePreview}`">
@@ -13,7 +15,7 @@
           <p>Select category</p>
           <select v-bind:value="category" @input="category = $event.target.value">
             <option>
-              travel bags
+              travelBags
             </option>
             <option>
               briefcases
@@ -53,6 +55,7 @@
 </template>
 
 <script>
+import { map } from '@firebase/util'
 import { mapState } from 'vuex'
 import imagePreview from '../mixins/imagePreview'
 export default {
@@ -60,7 +63,7 @@ export default {
   mixins: [imagePreview],
   data() {
     return{
-      imagePreview: "add.svg",
+      imagePreview: "add.svg", isUploading: false,
       image: '', price: '', ref: '', title: '', file: '', category: '', body: '', id: ''
     }
   },
@@ -78,7 +81,8 @@ export default {
     close() {
       this.$emit("close")
     },
-    createCard() {
+    async createCard() {
+      this.isUploading = true
       const itemCard = {
         image: this.file.name,
         price: this.price,
@@ -87,26 +91,58 @@ export default {
         category: this.category,
         body: this.body,
       }
-      console.log(itemCard)
       this.$store.commit("SET_IMAGE", this.file)
       this.$store.dispatch("POST_ITEMS_ON_API", itemCard)
+      this.image = ''
+      this.price = ''
+      this.title = ''
+      this.category = ''
+      this.body = ''
+      this.isUploading = false
     },
-    
+  }, 
+  computed: {
+    ...mapState({
+      progress: state => state.addCard.progress
+    }),
+    isItemUploading() {
+      if(this.progress == 0) return false
+      else if(this.progress != 100) return true
+      else if(this.progress == 100)return false
+    }
   }
 }
 </script>
 
 <style scoped>
-p{
+
+p {
   margin-bottom: 5px;
 }
 .item-popup {
+  position: relative;
   z-index: 2;
   min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 30px 10px;
+}
+
+.waiting_upload {
+  z-index: 4;
+  position: fixed;
+  left: 45vw;
+  bottom: 50vh;
+}
+
+.upload-wrapper {
+  z-index: 3;
+  position: absolute;
+  background-color: black;
+  height: 120vh;
+  width: 100vw;
+  opacity: 25%;
 }
 
 .item-popup__content {
@@ -144,9 +180,6 @@ p{
   justify-content:space-between;
 }
 
-.inpit-group__title {
-  
-}
 .inpit-group__price {
   margin-left: 10px;
 } 

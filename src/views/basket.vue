@@ -8,6 +8,9 @@
           <p class="">Choose all</p>
         </div>
       </div>
+      <div v-if="basket.length == 0">
+        Basket is empty
+      </div>
       <div v-for="item in basket" class="basket-items">
         <ul class="items-list">
           <li class="item">
@@ -67,13 +70,16 @@
         <p>Number of product: &nbsp</p>
         <p>{{ getTotalQty }}</p>
       </div>
-      <button class="button-order">Order</button>
+      <button @click="toPayments" class="button-order">Order</button>
       <div class="checkbox">
         <input class="checkbox-input" type="checkbox">
         <p class="checkbox__text">
           Agree with return conditions
         </p>
       </div>
+      <buy-items-popup :is-open="isPopupOpen" @close="isPopupOpen = false">
+
+      </buy-items-popup>
     </div>
   </app-layout-product-category>
 </template>
@@ -81,18 +87,26 @@
 <script>
 import { mapState } from 'vuex';
 import AppLayoutProductCategory from "../layouts/AppLayoutProductCategory.vue";
+import buyItemsPopup from '@/components/buyItemsPopup.vue';
 export default {
   name: 'basket',
-  components: { AppLayoutProductCategory },
+  components: { AppLayoutProductCategory, buyItemsPopup },
 
   data() {
     return {
       newAdress: '',
       price: [],
       isEditAdress: false,
+      isPopupOpen: false,
     }
   },
   methods: {
+    toPayments() {
+      if(this.basket.length !== 0) {
+        this.isPopupOpen = true
+      } else alert('add items to basket')  
+          
+    },
     changeAdress() {
       this.$store.dispatch("CHANGE_ADRESS", this.newAdress)
     },
@@ -158,9 +172,6 @@ export default {
 .checkbox {
   display: flex;
 }
-
-/* .checkbox-input {
-} */
 
 .checkbox__text {
   color: rgb(38, 38, 38);

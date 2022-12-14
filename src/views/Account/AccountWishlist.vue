@@ -6,6 +6,9 @@
           <p class="wishlist-title">Wishlist</p>
         </div>
         <div class="wishlist-items">
+          <p v-if="wishlist.length == 0">
+            Add your first item to wishlist
+          </p>
           <ul class="item-list">
             <li v-for="item in wishlist" class="item-in-wishlist">
               <div @click="this.$router.push(`/${item.id}`)" class="wishlist-item__image">
