@@ -11,7 +11,7 @@
           <div @click="this.$router.push('/wishlist')" class="account__wishlist">
             <h1>Wishlist:</h1>
             <div class="wishlist-brief">
-              <div v-for='item in wishlist'>
+              <div v-for='item in wishlist' :key="componentKey">
                 <img :src="`${item.image}`" class="wishlist-image" alt="bag">
               </div>
             </div>
@@ -34,8 +34,14 @@ export default {
 
   data() {
     return {
-
+      componentKey: 0
     }
+  },
+  methods: {
+    updateImage() {
+      this.componentKey += 1
+      console.log(this.wishlist)
+    },
   },
 
   computed: {
@@ -46,6 +52,14 @@ export default {
       phone: state => state.userInfo.phone,
       wishlist: state => [...state.wishlist.wishlist],
     }),
+  },
+  watch: {
+    wishlist: {
+      handler(val, oldVal) {
+        setTimeout(this.updateImage, 10000)
+      },
+      deep: true
+    }
   },
 
   mounted() {

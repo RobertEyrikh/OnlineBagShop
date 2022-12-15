@@ -7,6 +7,7 @@ import basket from './basket'
 import wishlist from './wishlist'
 import reviews from './reviews'
 import reviewsForCheck from './reviewsForCheck'
+import search from './search'
 
 export default createStore({
   modules: {
@@ -18,6 +19,7 @@ export default createStore({
     wishlist,
     reviews,
     reviewsForCheck,
+    search
     
   }
 })

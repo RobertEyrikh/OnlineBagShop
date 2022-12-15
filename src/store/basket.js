@@ -1,5 +1,6 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, update, onValue, get, child } from "firebase/database";
+import { getStorage, ref as storageReference, getDownloadURL } from "firebase/storage";
 
 export default {
   state: {
@@ -22,7 +23,7 @@ export default {
 
   actions: {
     BUY_ITEMS({ commit, state }, payload) {
-      console.log(state.itemsQty)
+      //console.log(state.itemsQty)
 
     },
 
@@ -132,16 +133,22 @@ export default {
               for (let key in itemData) {
                 if(data.items) {
                   if (data.items.includes(key)) {
-                    let basketItem = {
-                      id: itemData[key].id,
-                      image: itemData[key].image,
-                      price: itemData[key].price,
-                      title: itemData[key].title,
-                    }
-                    basketArray.push(basketItem)
+                    getDownloadURL(storageReference(getStorage(), 'files/' + itemData[key].image))
+                    .then((url) => {
+                      basketItem.image = url
+                    })
+                      let basketItem = {
+                        id: itemData[key].id,
+                        image: 'add.svg',
+                        price: itemData[key].price,
+                        title: itemData[key].title,
+                      }
+                      basketArray.push(basketItem)
+
                   }  
                 }
               } 
+              //console.log(basketArray)
               commit("SET_BASKET", basketArray)            
             })
           })

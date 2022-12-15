@@ -1,5 +1,6 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, update, onValue, get, child } from "firebase/database";
+import { getStorage, ref as storageReference, getDownloadURL } from "firebase/storage";
 
 export default {
   state: {
@@ -62,9 +63,13 @@ export default {
                   for (let key in itemData) {
                     if (data.wishlist) {
                       if (data.wishlist.includes(key)) {
+                        getDownloadURL(storageReference(getStorage(), 'files/' + itemData[key].image))
+                        .then((url) => {
+                          wishlistItem.image = url
+                          })
                         let wishlistItem = {
                           id: itemData[key].id,
-                          image: itemData[key].image,
+                          image: 'add.svg',
                           price: itemData[key].price,
                           title: itemData[key].title,
                         }

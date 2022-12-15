@@ -11,7 +11,7 @@
       <div v-if="basket.length == 0">
         Basket is empty
       </div>
-      <div v-for="item in basket" class="basket-items">
+      <div v-for="item in basket" :key="componentKey" class="basket-items">
         <ul class="items-list">
           <li class="item">
             <div @click="this.$router.push(`/${item.id}`)" class="item-image">
@@ -77,6 +77,7 @@
           Agree with return conditions
         </p>
       </div>
+      <button @click="updateImage">Check!!!</button>
       <buy-items-popup :is-open="isPopupOpen" @close="isPopupOpen = false">
 
       </buy-items-popup>
@@ -98,14 +99,17 @@ export default {
       price: [],
       isEditAdress: false,
       isPopupOpen: false,
+      componentKey: 0,
     }
   },
   methods: {
+    updateImage() {
+      this.componentKey += 1
+    },
     toPayments() {
       if(this.basket.length !== 0) {
         this.isPopupOpen = true
-      } else alert('add items to basket')  
-          
+      } else alert('add items to basket')           
     },
     changeAdress() {
       this.$store.dispatch("CHANGE_ADRESS", this.newAdress)
@@ -127,6 +131,7 @@ export default {
       itemsQty: state => state.basket.itemsQty,
       adress: state => state.userInfo.adress,
     }),
+    
     getTotalAmount() {
       let price = 0
       for(let i = 0; i < this.basket.length; i ++) {
@@ -142,11 +147,19 @@ export default {
       return Qty
     }
   },
+  watch: {
+    basket: {
+      handler(val, oldVal) {
+        setTimeout(this.updateImage, 3000) 
+      },
+      deep: true
+    }
+  },
 
   mounted() {
     this.$store.dispatch("GET_BASKET")
     this.$store.dispatch("GET_ITEMS_QTY")
-    return this.$store.dispatch("GET_USER_INFO")
+    this.$store.dispatch("GET_USER_INFO")
   }
 }
 </script>

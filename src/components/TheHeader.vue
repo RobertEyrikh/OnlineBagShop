@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <nav>
+    <nav @click="!isSearchOpen">
       <ul class="header__title">
         <div class="header-links">
           <li> <a href="/"><img class="main__image" src="../assets/logo.svg"></a></li>
@@ -8,7 +8,15 @@
           <li> <a href="/services">Services</a> </li>
           <li> <a href="/delivery">Delivery</a> </li>
         </div>
-        <input class="search" placeholder="Enter product name">
+        <div class="header-search">
+          <input @click="isSearchOpen = true" v-model.trim="searchValue" @input="search(searchValue)" class="search" placeholder="Enter product name">
+          <div v-if="isSearchOpen" class="searching-results">
+            <div v-for="item in foundsItems">
+              <router-link :to = "`/${item.id}`" class="foundItem">{{item.title}}</router-link>
+            </div>
+          </div>
+          <!-- <button class="search-button" @click="search(searchValue)"><img class="search-button__img" src="@/assets/icons/search.svg"></button> -->
+        </div>
         <div class="header-buttons">
           <button v-if="!user" class="btn-in" @click="isSignInOpen = true"> Sign in </button>
           <SignInPopup :is-open="isSignInOpen" @close="isSignInOpen = false">
@@ -63,9 +71,14 @@ export default {
       isSignInOpen: false,
       isSignUpOpen: false,
       qty: 0, 
+      searchValue: '',
+      isSearchOpen: false,
     };
   },
   methods: {
+    search(str) {
+      this.$store.dispatch("GET_ITEMS_BY_NAME", str)
+    },
     logout() {
       this.$store.dispatch('logout')
       this.$router.push('/')
@@ -82,6 +95,7 @@ export default {
   },
   computed: {
     ...mapState({
+      foundsItems: state => state.search.foundsItems,
       basket: state => [...state.basket.basket],
       user: state => state.auth.user,
       isAdmin: state => state.auth.admin,
@@ -156,6 +170,26 @@ export default {
   align-items: center;
 }
 
+.header-search {
+  position: relative;
+  /* display: flex; */
+}
+
+.search-button {
+  border: none;
+  background-color: inherit;
+}
+
+.search-button__img:hover {
+  filter: invert(62%) sepia(60%) saturate(1682%) hue-rotate(298deg) brightness(100%) contrast(89%);
+}
+
+.search-button__img {
+  height: 30px;
+  width: 30px;
+  transition: all .2s;
+}
+
 .search {
   width: 290px;
   height: 30px;
@@ -165,10 +199,30 @@ export default {
   transition: all ease-in-out .4s;
 }
 
+.searching-results {
+  overflow:auto;
+  position: absolute;
+  background-color: #F0EBF4;
+  border-radius: 10px;
+  height: 120px;
+  width: 290px;
+}
+
 .search:focus {
   opacity: 100%;
   box-shadow: 0.3px 0.3px 0.3px 0.3px rgba(0, 0, 0, 0.2);
   outline: none;
+}
+
+.foundItem {
+  margin: 0;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.foundItem:hover {
+  background-color: #F172A1;
+  cursor: pointer;
 }
 .header-buttons {
   display: flex;
@@ -254,7 +308,6 @@ export default {
 
 .btn:hover {
   background-color: #F172A1;
-  transform: scale(1.07);
 }
 .user__menu {
   float: left;

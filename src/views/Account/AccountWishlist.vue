@@ -10,7 +10,7 @@
             Add your first item to wishlist
           </p>
           <ul class="item-list">
-            <li v-for="item in wishlist" class="item-in-wishlist">
+            <li v-for="item in wishlist" :key="componentKey" class="item-in-wishlist">
               <div @click="this.$router.push(`/${item.id}`)" class="wishlist-item__image">
                 <img :src="`${item.image}`" class="wishlist-image" alt="bag">
               </div>
@@ -47,11 +47,15 @@ export default {
 
   data() {
     return {
-
+      componentKey: 0,
     }
   },
 
   methods: {
+    updateImage() {
+      this.componentKey += 1
+      console.log(this.wishlist)
+    },
     addToWishlist(id) {
       this.$store.dispatch("ADD_ITEM_TO_WISHLIST", id)
     },
@@ -70,6 +74,14 @@ export default {
     }),
     getSameTypeItems() {
       this.$store.dispatch("GET_SAME_TYPE_ITEMS")
+    }
+  },
+  watch: {
+    wishlist: {
+      handler(val, oldVal) {
+        setTimeout(this.updateImage, 5000)
+      },
+      deep: true
     }
   },
 

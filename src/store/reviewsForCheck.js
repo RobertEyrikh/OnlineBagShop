@@ -45,7 +45,6 @@ export default {
         }
       })
     },
-
     GET_REVIEWS_FOR_CHECK({ commit }) {
       let arrayOfComments = []
       const db = getDatabase();
