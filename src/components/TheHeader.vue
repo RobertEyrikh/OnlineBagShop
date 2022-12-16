@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <nav @click="!isSearchOpen">
+    <nav>
       <ul class="header__title">
         <div class="header-links">
           <li> <a href="/"><img class="main__image" src="../assets/logo.svg"></a></li>
@@ -9,12 +9,13 @@
           <li> <a href="/delivery">Delivery</a> </li>
         </div>
         <div class="header-search">
-          <input @click="isSearchOpen = true" v-model.trim="searchValue" @input="search(searchValue)" class="search" placeholder="Enter product name">
+          <input @click.prevent="isSearchOpen = true" v-model.trim="searchValue" @input="search(searchValue)" class="search" placeholder="Enter product name">
           <div v-if="isSearchOpen" class="searching-results">
-            <div v-for="item in foundsItems">
+            <div v-for="item in foundsItems" :key="item.id" >
               <router-link :to = "`/${item.id}`" class="foundItem">{{item.title}}</router-link>
             </div>
           </div>
+          <div v-if="isSearchOpen" @click.prevent="isSearchOpen = false" class="searh-backdrop"></div>
           <!-- <button class="search-button" @click="search(searchValue)"><img class="search-button__img" src="@/assets/icons/search.svg"></button> -->
         </div>
         <div class="header-buttons">
@@ -205,7 +206,29 @@ export default {
   background-color: #F0EBF4;
   border-radius: 10px;
   height: 120px;
-  width: 290px;
+  width: 295px;
+  z-index: 3;
+  border-radius: 5px;
+}
+
+.searching-results::-webkit-scrollbar {
+  width: 7px;
+  background-color: #F0EBF4;
+}
+
+.searching-results::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #F172A1;
+}
+
+.searh-backdrop {
+  z-index: 1;
+  height: 100vh;
+  width: 98vw;
+  opacity: 0;
+  position: absolute;
+  left: -35vw;
+  top: -7vh;
 }
 
 .search:focus {
@@ -215,9 +238,13 @@ export default {
 }
 
 .foundItem {
-  margin: 0;
+  text-decoration: none;
+  margin-top: 20px;
   padding: 5px;
   border-radius: 10px;
+  color: #111;
+  transition: all .05s ease-in-out;
+  z-index: 15;
 }
 
 .foundItem:hover {

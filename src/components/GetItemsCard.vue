@@ -1,4 +1,11 @@
 <template>
+  <h5 class="sort"> Sorted by:
+    <select v-model="currentSort" class="sort-select">
+      <option class="sort-option">Featured</option>
+      <option class="sort-option">Price: Low to Hight</option>
+      <option class="sort-option">Price: Hight to Low</option>
+    </select>
+  </h5>
   <ul v-if="!getCategory().data" id="elem" class="all-items-card0">
     <li v-for="card in aggregator" class="items-card">
       <div class="loader"></div>
@@ -47,7 +54,9 @@ export default {
   data() {
     return {
       isEditOpen: false,
-      aggregator: [1, 1, 1, 1, 1, 1],     
+      aggregator: [1, 1, 1, 1, 1, 1],
+      currentSort: 'Featured',
+      currentArrayOfItems: [],     
     }
   },
   props: {
@@ -57,26 +66,20 @@ export default {
     }
   },
   methods: {
-    check() {
-      console.log(this.category)
-    },
     getCategory() {
       switch(this.category) {
-        case 'travelBags': return this.travelBags
-        case 'wallets': return this.wallets
-        case 'belts': return this.belts
-        case 'briefcases': return this.briefcases
-        case 'backpacks': return this.backpacks
-      }
-      //if(this.category == 'travelBags') return this.travelBags
-      
+        case 'travelBags': return this.currentArrayOfItems = this.travelBags
+        case 'wallets': return this.currentArrayOfItems = this.wallets
+        case 'belts': return this.currentArrayOfItems = this.belts
+        case 'briefcases': return this.currentArrayOfItems = this.briefcases
+        case 'backpacks': return this.currentArrayOfItems = this.backpacks
+      } 
     },
     isItemInBasket(id) {
       return this.sameTypeItems.indexOf(id)
     },
     editCard(id) {
       this.$store.commit('GET_CARD_ID', id)
-      console.log(this.isAdmin)
       return this.isEditOpen = true
     },
     upadateItemsCard() {
@@ -112,7 +115,21 @@ export default {
       this.$store.dispatch("GET_SAME_TYPE_ITEMS")
     }
   },
-
+  watch: {
+    currentSort(newValue) {
+      this.getCategory().data.sort((item1, item2) => {
+        if(newValue == 'Price: Low to Hight') {
+          if (+item1.price < +item2.price) return - 1
+        }
+        if (newValue == 'Price: Hight to Low') {
+          if (+item1.price > +item2.price) return - 1
+        }        
+      })
+      if (newValue == 'Featured') {
+        this.getCategory()
+      }
+    }
+  },
   mounted() {
     //this.$store.dispatch("GET_ITEMS_FROM_API", this.category)
     this.$store.dispatch("GET_ITEM_FROM_WISHLIST")
@@ -122,6 +139,31 @@ export default {
 </script>
 
 <style scoped>
+.sort {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-right: 2%;
+}
+
+.sort-select {
+  border-radius: 5px;
+  border: none;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .04);
+  height: 25px;
+  color: #e3fbff;
+  background-color: #F172A1;
+  outline: none;
+  cursor: pointer;
+}
+
+.sort-select::-ms-expand {
+  display: none;
+}
+
+.sort-option:hover {
+  background-color: #E64398;
+}
 .all-items-card0 {
   list-style-type: none;
   display: grid;

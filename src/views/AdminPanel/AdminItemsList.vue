@@ -2,12 +2,24 @@
   <admin-devtools-layout>
     <div class="admin-items">
       <div class="admin-items__header">
-        <select class="id-filter">
+        <select v-model="currentCategory" class="id-filter">
           <option>
-            qwe
+            All
           </option>
           <option>
-            qwe
+            travelBags
+          </option>
+          <option>
+            briefcases
+          </option>
+          <option>
+            backpacks
+          </option>
+          <option>
+            wallets
+          </option>
+          <option>
+            belts
           </option>
         </select>
         <button @click="isPopupOpen = true" class="add-button">
@@ -41,7 +53,7 @@
         </div>
         <ul class="items-list">
           <div class="loader" v-if="!allItemsCard.data"></div>
-          <li v-for="item in allItemsCard.data" class="item">
+          <li v-for="item in filteredItems" :key="item.title" class="item">
             <p class="cell ">
               <img :src="`${item.image}`" class="cell-image">
             </p>
@@ -85,20 +97,19 @@ export default {
   data() {
     return {
       isPopupOpen: false,
-      isEdit: false
+      isEdit: false,
+      allItems: [],
+      currentCategory: 'All'
     }
   },
   methods: {
-    check() {
-      console.log(this.allItemsCard)
-    },
     deleteItem(id) {
       let result = confirm('Do you want to remove the item')
       if(result) {
         this.$store.dispatch("DELETE_ITEM", id)
-          .then(() => {
-            alert('item has been removed')
-          })
+        .then(() => {
+          alert('item has been removed')
+        })
       }
     },
     edit() {
@@ -111,11 +122,23 @@ export default {
   computed: {
     ...mapState({
       allItemsCard: state => state.getCard.allItemsCard,
-    })
+    }),
+    filteredItems() {
+      if (this.currentCategory == 'All') {
+        return {...this.allItemsCard}.data
+      }
+      return {...this.allItemsCard}.data.filter((elem) => elem.category == this.currentCategory)
+    }
   },
   mounted() {
     this.$store.dispatch('GET_ITEMS_FROM_API')
-  }
+  },
+  // watch: {
+  //   currentCategory(newValue) {
+  //     this.allItems = this.getAllItems().filter((elem) => elem.category == newValue)
+  //     //this.allItems.filter
+  //   }
+  // }
 }
 </script>
 

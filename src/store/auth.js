@@ -26,7 +26,6 @@ export default {
             try {
                 await signInWithEmailAndPassword(getAuth(), email, password)
                 commit('SET_USER')
-                console.log(getAuth().currentUser)
                 if (user.uid == 'SyQvjsJTdjfabSrwlLJX0rlFv5A3') {
                     commit('SET_ADMIN')
                 } else {

@@ -40,7 +40,6 @@ export default {
               }
             }
             commit('SET_ARRAY_OF_ALL_COMMENTS', arrayOfAllComments)
-            // console.log(arrayOfAllComments)
           })
         }
       })

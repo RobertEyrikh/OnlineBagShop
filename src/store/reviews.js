@@ -44,7 +44,7 @@ export default {
         onValue(pendingReviewsRef, (snapshot) => {
           const data = snapshot.val();
           for (let itemId in data) {
-            if (data.hasOwnProperty(itemId)) {
+            if (data.hasOwnProperty(itemId) && user !== undefined) {
               let commentInfo =  {
                 itemId: itemId,
                 userId: user.uid,
@@ -60,7 +60,7 @@ export default {
         onValue(reviewsRef, (snapshot) => {
           const data = snapshot.val();
           for (let itemId in data) {
-            if (data.hasOwnProperty(itemId)) {
+            if (data.hasOwnProperty(itemId) && user !== undefined) {
               let commentInfo = {
                 itemId: itemId,
                 userId: user.uid,

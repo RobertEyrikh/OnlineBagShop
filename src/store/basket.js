@@ -31,7 +31,7 @@ export default {
       const db = getDatabase()
       const auth = getAuth()
       onAuthStateChanged(auth, async user => {
-        if (user) {
+        if (user && user.uid !== 'SyQvjsJTdjfabSrwlLJX0rlFv5A3') {
           const userRef = ref(db, 'Users/' + user.uid);
           onValue(userRef, (snapshot) => {
             const data = snapshot.val();
@@ -69,8 +69,7 @@ export default {
             }
           })
         }
-      })
-      
+      }) 
     },
     async REMOVE_SAME_TYPES_ITEMS({ commit }, payload) {
       const db = getDatabase()
@@ -122,21 +121,22 @@ export default {
       const db = getDatabase();
       const auth = getAuth()
       onAuthStateChanged(auth, async user => {
-        if (user.uid !== 'SyQvjsJTdjfabSrwlLJX0rlFv5A3') {
-          const itemRef = ref(db, 'TravelBags')
-          const userRef = ref(db, 'Users/' + user.uid);
-          onValue(userRef, (snapshot) => {
-            const data = snapshot.val();
-            onValue(itemRef, (snapshot) => {
-              let basketArray = []
-              const itemData = snapshot.val()
-              for (let key in itemData) {
-                if(data.items) {
-                  if (data.items.includes(key)) {
-                    getDownloadURL(storageReference(getStorage(), 'files/' + itemData[key].image))
-                    .then((url) => {
-                      basketItem.image = url
-                    })
+        if (user !== undefined && user !== null) {
+          if (user.uid !== 'SyQvjsJTdjfabSrwlLJX0rlFv5A3') {
+            const itemRef = ref(db, 'TravelBags')
+            const userRef = ref(db, 'Users/' + user.uid);
+            onValue(userRef, (snapshot) => {
+              const data = snapshot.val();
+              onValue(itemRef, (snapshot) => {
+                let basketArray = []
+                const itemData = snapshot.val()
+                for (let key in itemData) {
+                  if (data.items) {
+                    if (data.items.includes(key)) {
+                      getDownloadURL(storageReference(getStorage(), 'files/' + itemData[key].image))
+                        .then((url) => {
+                          basketItem.image = url
+                        })
                       let basketItem = {
                         id: itemData[key].id,
                         image: 'add.svg',
@@ -145,13 +145,14 @@ export default {
                       }
                       basketArray.push(basketItem)
 
-                  }  
+                    }
+                  }
                 }
-              } 
-              //console.log(basketArray)
-              commit("SET_BASKET", basketArray)            
+                //console.log(basketArray)
+                commit("SET_BASKET", basketArray)
+              })
             })
-          })
+          }
         }
       })
     }

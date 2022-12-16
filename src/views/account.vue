@@ -40,7 +40,6 @@ export default {
   methods: {
     updateImage() {
       this.componentKey += 1
-      console.log(this.wishlist)
     },
   },
 

@@ -1,7 +1,7 @@
 <template>
   <admin-devtools-layout>
     <div class="admin-panel__title">
-      <select v-if="!isPublishedComments" class="id-filter" v-model="currentFilter" @change="commentFilter(currentFilter)">
+      <select v-if="!isPublishedComments" class="id-filter" v-model="currentFilter" >
         <option>All</option>
         <option class="id-filter__item" v-for="(value, name) in uniqId" :key="name">
           {{name}} {{value}}
@@ -33,7 +33,7 @@
         </p>
       </div>
       <ul v-if="isPublishedComments" class="comment-list">
-        <li v-for="comment in publishedArray" :key="comment.userId" class="comment">
+        <li v-for="comment in filteredPublishComments" :key="comment.review" class="comment">
           <p class="cell cell__email">
             {{ comment.itemId }}
           </p>
@@ -50,7 +50,7 @@
         </li>
       </ul>
       <ul v-if="!isPublishedComments" class="comment-list">
-        <li v-for="comment in resultArray" :key="comment.userId" class="comment">
+        <li v-for="comment in filteredComments" :key="comment.userId" class="comment">
           <p class="cell cell__email">
             {{ comment.itemId }}
           </p>
@@ -81,28 +81,26 @@ export default {
     return {
       isPublishedComments: false,
       currentFilter: 'All',
-      resultArray: this.arrayOfComments,
-      publishedArray: this.arrayOfAllComments ,
       publishedCommentFilter: 'All',
     }
   },
   methods: {
-    commentFilter(dirtyId) {
-      if(dirtyId == 'All') {
-        this.resultArray = this.arrayOfComments
-      } else {
-        let id = dirtyId.split(' ')[0]
-        this.resultArray = this.arrayOfComments.filter((elem) => elem.itemId == id) 
-      }     
-    },
-    commentPublishedFilter(dirtyId) {
-      if (dirtyId == 'All') {
-        this.publishedArray = this.arrayOfAllComments
-      } else {
-        let id = dirtyId.split(' ')[0]
-        this.publishedArray = this.arrayOfAllComments.filter((elem) => elem.itemId == id)
-      }
-    },
+    // commentFilter(dirtyId) {
+    //   if(dirtyId == 'All') {
+    //     this.resultArray = this.arrayOfComments
+    //   } else {
+    //     let id = dirtyId.split(' ')[0]
+    //     this.resultArray = this.arrayOfComments.filter((elem) => elem.itemId == id) 
+    //   }     
+    // },
+    // commentPublishedFilter(dirtyId) {
+    //   if (dirtyId == 'All') {
+    //     this.publishedArray = this.arrayOfAllComments
+    //   } else {
+    //     let id = dirtyId.split(' ')[0]
+    //     this.publishedArray = this.arrayOfAllComments.filter((elem) => elem.itemId == id)
+    //   }
+    // },
     deleteReview(itemId, userId) {
       let commentInfo = {
         itemId: itemId,
@@ -130,8 +128,20 @@ export default {
   computed: {
     ...mapState({
       arrayOfComments: state => state.reviewsForCheck.arrayOfComments,
-      arrayOfAllComments: state => state.reviewsForCheck.arrayOfAllComments
+      arrayOfPublishedComments: state => state.reviewsForCheck.arrayOfAllComments
     }),
+    filteredComments() {
+      if (this.currentFilter == 'All') {
+        return { ...this.arrayOfComments }
+      }
+      return [...this.arrayOfComments].filter((elem) => elem.itemId == this.currentFilter.split(' ')[0])
+    },
+    filteredPublishComments() {
+      if (this.publishedCommentFilter == 'All') {
+        return { ...this.arrayOfPublishedComments }
+      }
+      return [...this.arrayOfPublishedComments].filter((elem) => elem.itemId == this.publishedCommentFilter.split(' ')[0])
+    },
     uniqId() {
       let result = {};
       for (let i = 0; i < this.arrayOfComments.length; i ++) {       
@@ -145,8 +155,8 @@ export default {
     },
     uniqPublishedId() {
       let result = {};
-      for (let i = 0; i < this.arrayOfAllComments.length; i++) {
-        let a = this.arrayOfAllComments[i].itemId;
+      for (let i = 0; i < this.arrayOfPublishedComments.length; i++) {
+        let a = this.arrayOfPublishedComments[i].itemId;
         if (result[a] != undefined)
           ++result[a];
         else

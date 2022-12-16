@@ -9,7 +9,7 @@
         </li>
         <li v-for="comment in pendingCommentsOfUser" :key="comment.itemId" class="comment-body">
           <div class="comment-body__title">
-            <p class="comment-item">{{comment.itemId}}</p>
+            <p class="comment-item">{{ getItemName(comment.itemId) }}</p>
             <p class="pending-status">Pending</p>
           </div>
           <div class="comment-grade">
@@ -21,7 +21,7 @@
         </li>
         <li v-for="comment in commentsOfUser" :key="comment.itemId" class="comment-body">
           <div class="comment-body__title">
-            <p class="comment-item">{{ comment.itemId }}</p>
+            <p class="comment-item">{{ getItemName(comment.itemId) }}</p>
             <p class="published-status">Published</p>
           </div>
           <div class="comment-grade">
@@ -50,7 +50,11 @@ export default {
   methods: {
     check() {
       console.log(this.commentsOfUser)
-    }, 
+    },
+    getItemName(id) {
+      this.$store.dispatch("GET_ITEM_NAME_BY_ID", id)
+      return this.itemName
+    } 
     // getItemInfo(id) {
     //   let arrayOfItems = []
     //   this.$store.dispatch("GET_THIS_ITEM0", id)
@@ -68,6 +72,7 @@ export default {
       commentsOfUser: state => state.reviews.commentsOfUser,
       pendingCommentsOfUser: state => state.reviews.pendingCommentsOfUser,
       thisItem: state => state.getCard.thisItem,
+      itemName: state => state.getCard.itemName,
     })
   },
 

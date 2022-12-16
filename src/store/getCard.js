@@ -15,6 +15,7 @@ export default {
     briefcases: [],
     backpacks: [],
     belts: [],
+    itemName: '',
   }),
   mutations: {
     PUSH_ALL_ITEMS_CARD (state, payload) {
@@ -25,9 +26,23 @@ export default {
     },
     PUSH_ITEMS_BY_CATEGORY (state, payload) {
       state[payload.category] = payload.data
+    },
+    SET_NAME_BY_ID (state, payload) {
+      state.itemName = payload
     }
   },
   actions: {
+    GET_ITEM_NAME_BY_ID({ commit }, payload) {
+      const db = getDatabase();
+      const itemRef = ref(db, 'TravelBags')
+      onValue(itemRef, (snapshot) => {
+        const data = snapshot.val();
+        if(data[payload]) {
+          let name = data[payload].title
+          commit("SET_NAME_BY_ID", name)
+        } 
+      })
+    },
     async GET_ITEMS_BY_CATEGORY({ commit }, payload) {
       let allItems
       let allItemsCard = new ItemsCardContainer([])

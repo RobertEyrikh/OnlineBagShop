@@ -54,13 +54,9 @@ export default {
   methods: {
     updateImage() {
       this.componentKey += 1
-      console.log(this.wishlist)
     },
     addToWishlist(id) {
       this.$store.dispatch("ADD_ITEM_TO_WISHLIST", id)
-    },
-    basket() {
-      console.log(this.sameTypeItems)
     },
     isItemInBasket(id) {
       return this.sameTypeItems.indexOf(id)
@@ -88,10 +84,6 @@ export default {
   mounted() {
     this.$store.dispatch("GET_ITEM_FROM_WISHLIST")
   },
-
-  // beforeUpdate() {
-  //   this.$store.dispatch("GET_SAME_TYPE_ITEMS")
-  // }
   
 }
 </script>
@@ -118,7 +110,6 @@ export default {
   display: flex;
 }
 
-.checkbox-input {}
 
 .checkbox__text {
   color: rgb(38, 38, 38);
